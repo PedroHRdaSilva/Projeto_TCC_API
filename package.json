@@ -13,6 +13,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+<<<<<<< HEAD
     "@apollo/server": "^4.12.2",
     "@graphql-tools/schema": "^10.0.25",
     "@redpill-paris/winston-limit-transport": "^1.0.1",
@@ -28,6 +29,11 @@
     "mongoose": "^8.17.1",
     "nodemailer": "^7.0.5",
     "winston": "^3.17.0"
+=======
+    "apollo-server": "^3.13.0",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0"
+>>>>>>> 2f35a116bca62ee218dae695285bba8f26e7ce17
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.7",
