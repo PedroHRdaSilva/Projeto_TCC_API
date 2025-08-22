@@ -1,0 +1,1 @@
+{"version":3,"file":"formatters.js","sourceRoot":"","sources":["../../../src/infra/logging/formatters.ts"],"names":[],"mappings":";;;;;;AAAA,sCAAsC;AACtC,sDAA8B;AAEjB,QAAA,oBAAoB,GAAG,iBAAO,CAAC,MAAM,CAAC,CAAC,IAAI,EAAE,EAAE;IAC1D,IAAI,CAAC,KAAK,GAAG,IAAI,CAAC,KAAK,CAAC,WAAW,EAAE,CAAC;IACtC,OAAO,IAAI,CAAC;AACd,CAAC,CAAC,CAAC"}

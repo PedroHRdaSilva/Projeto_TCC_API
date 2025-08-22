@@ -4,18 +4,56 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "swc --source-maps true --out-dir .build src",
+    "dev": "nodemon --quiet -e ts,tsx -w src --exec \"pnpm run build && cross-env TZ=UTC node --no-warnings --enable-source-maps ./.build/src/server\"",
+    "codegen": "graphql-codegen --config codegen.yml && prettier --write src/graphql/types/graphql.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+<<<<<<< HEAD
+    "@apollo/server": "^4.12.2",
+    "@graphql-tools/schema": "^10.0.25",
+    "@redpill-paris/winston-limit-transport": "^1.0.1",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "dotenv": "^17.2.1",
+    "express": "^4.21.2",
+    "graphql": "^16.11.0",
+    "graphql-scalars": "^1.24.2",
+    "graphql-tag": "^2.12.6",
+    "immutable": "^5.1.3",
+    "mongodb": "^6.18.0",
+    "mongoose": "^8.17.1",
+    "nodemailer": "^7.0.5",
+    "winston": "^3.17.0"
+=======
     "apollo-server": "^3.13.0",
     "express": "^5.1.0",
     "graphql": "^16.11.0"
+>>>>>>> 2f35a116bca62ee218dae695285bba8f26e7ce17
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.7",
+    "@graphql-codegen/client-preset": "4.8.3",
+    "@graphql-codegen/schema-ast": "^4.1.0",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-resolvers": "^4.5.1",
+    "@graphql-tools/graphql-tag-pluck": "^8.3.21",
+    "@swc/cli": "^0.7.8",
+    "@swc/core": "^1.13.3",
+    "@types/body-parser": "^1.19.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.23",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^24.3.0",
+    "@types/nodemailer": "^7.0.1",
+    "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "typescript": "^5.9.2"
   }
 }

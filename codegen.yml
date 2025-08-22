@@ -1,0 +1,32 @@
+overwrite: true
+watch: false
+
+schema:
+  "./src/**/*.ts":
+    noRequire: true
+    documents: null
+
+generates:
+  src/graphql/schema/schema.graphql:
+    plugins:
+      - schema-ast
+
+  src/graphql/types/graphql.ts:
+    config:
+      typesPrefix: I
+      useIndexSignature: true
+      defaultMapper: Partial<{T}>
+      contextType: ./GraphqlContext#TGraphQLContext
+      scalars:
+        Cursor: ~/utils/Cursor#default
+        ObjectID: mongodb#ObjectId
+      showUnusedMappers: true
+      # mappers:
+      #   # TransactionGroup: ../../modules/transactions/models/TransactionGroup#TransactionGroup
+      #   # Transaction: ../../modules/transactions/models/Transaction#Transaction
+      #   # StandardTransaction: ../../modules/transactions/models/Transaction#Transaction
+      #   # SplitTransaction: ../../modules/transactions/models/Transaction#Transaction
+      #   # TransactionsByCategoryChart: ../../modules/transactions/models/TransactionsByCategoryChart#TransactionsByCategoryChart
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"

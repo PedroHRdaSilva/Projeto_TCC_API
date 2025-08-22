@@ -1,0 +1,171 @@
+directive @cacheControl(inheritMaxAge: Boolean, maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | INTERFACE | OBJECT | UNION
+
+scalar AccountNumber
+
+type AuthenticatedUser {
+  accessToken: String!
+  email: String!
+}
+
+scalar BigInt
+
+scalar Byte
+
+enum CacheControlScope {
+  PRIVATE
+  PUBLIC
+}
+
+scalar CountryCode
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+scalar Currency
+
+scalar Cursor
+
+scalar DID
+
+scalar Date
+
+scalar DateTime
+
+scalar Duration
+
+scalar EmailAddress
+
+scalar GUID
+
+scalar HSL
+
+scalar HSLA
+
+scalar HexColorCode
+
+scalar Hexadecimal
+
+scalar IBAN
+
+scalar IPv4
+
+scalar IPv6
+
+scalar ISBN
+
+scalar ISO8601Duration
+
+scalar JSON
+
+scalar JSONObject
+
+scalar JWT
+
+scalar Latitude
+
+scalar LocalDate
+
+scalar LocalEndTime
+
+scalar LocalTime
+
+scalar Locale
+
+scalar Long
+
+scalar Longitude
+
+scalar MAC
+
+type Mutation {
+  createUser(input: CreateUserInput!): Boolean
+  forgotPassword(email: String!): Boolean
+  loginWithCredentials(email: String!, password: String!): Boolean
+  now: BigInt
+  resetPassword(password: String!, token: String!): Boolean
+}
+
+scalar NegativeFloat
+
+scalar NegativeInt
+
+scalar NonEmptyString
+
+scalar NonNegativeFloat
+
+scalar NonNegativeInt
+
+scalar NonPositiveFloat
+
+scalar NonPositiveInt
+
+scalar ObjectID
+
+type ObjectKeyValue {
+  key: String!
+  value: String!
+}
+
+input ObjectKeyValueInput {
+  key: String!
+  value: String!
+}
+
+type PageInfo {
+  cursor: Cursor
+  hasNextPage: Boolean!
+  totalCount: Int!
+}
+
+scalar PhoneNumber
+
+scalar Port
+
+scalar PositiveFloat
+
+scalar PositiveInt
+
+scalar PostalCode
+
+type Query {
+  now: BigInt
+  viewer: Viewer
+}
+
+scalar RGB
+
+scalar RGBA
+
+scalar RoutingNumber
+
+scalar SafeInt
+
+scalar Time
+
+scalar TimeZone
+
+scalar Timestamp
+
+scalar URL
+
+scalar USCurrency
+
+scalar UUID
+
+scalar UnsignedFloat
+
+scalar UnsignedInt
+
+scalar UtcOffset
+
+type Viewer {
+  _id: ObjectID!
+  email: String!
+  isAdmin: Boolean!
+  name: String!
+}
+
+scalar Void
