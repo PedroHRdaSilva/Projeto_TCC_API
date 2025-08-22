@@ -1,0 +1,9 @@
+.build
+./build/
+.dist/
+.env
+.tsbuildinfo
+.vscode
+/node_modules/
+.eslintcache
+src/build/git.ts
