@@ -1,6 +1,5 @@
 import express, { json } from "express";
 import { MongoClient } from "mongodb";
-import connectToMongo from "./infra/connectToMongo";
 import "dotenv/config";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
@@ -9,6 +8,7 @@ import schema from "../src/graphql/schema";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 import useMongoCollections from "./infra/useMongoCollections";
+import connectToMongo from "./infra/connectToMongo";
 
 const app = express();
 
