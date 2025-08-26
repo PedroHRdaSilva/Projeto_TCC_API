@@ -135,12 +135,12 @@ export type IIconPropertiesInput = {
 export type IMutation = {
   __typename?: "Mutation";
   createTransactionGroup: ITransactionGroup;
-  createUser?: Maybe<Scalars["Boolean"]["output"]>;
+  createUser: Scalars["Boolean"]["output"];
   deleteTransactionGroup: Scalars["Boolean"]["output"];
-  forgotPassword?: Maybe<Scalars["Boolean"]["output"]>;
-  loginWithCredentials?: Maybe<Scalars["Boolean"]["output"]>;
+  forgotPassword: Scalars["Boolean"]["output"];
+  loginWithCredentials: Scalars["Boolean"]["output"];
   now?: Maybe<Scalars["BigInt"]["output"]>;
-  resetPassword?: Maybe<Scalars["Boolean"]["output"]>;
+  resetPassword: Scalars["Boolean"]["output"];
   updateTransactionGroup: ITransactionGroup;
 };
 
@@ -241,21 +241,21 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Promise<TResult> | TResult;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
 export interface SubscriptionSubscriberObject<
@@ -309,13 +309,13 @@ export type SubscriptionResolver<
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
 export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
   obj: T,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
@@ -330,7 +330,7 @@ export type DirectiveResolverFn<
   parent: TParent,
   args: TArgs,
   context: TContext,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
@@ -724,7 +724,7 @@ export type IMutationResolvers<
     RequireFields<IMutationCreateTransactionGroupArgs, "input">
   >;
   createUser?: Resolver<
-    Maybe<IResolversTypes["Boolean"]>,
+    IResolversTypes["Boolean"],
     ParentType,
     ContextType,
     RequireFields<IMutationCreateUserArgs, "input">
@@ -736,20 +736,20 @@ export type IMutationResolvers<
     RequireFields<IMutationDeleteTransactionGroupArgs, "_id">
   >;
   forgotPassword?: Resolver<
-    Maybe<IResolversTypes["Boolean"]>,
+    IResolversTypes["Boolean"],
     ParentType,
     ContextType,
     RequireFields<IMutationForgotPasswordArgs, "email">
   >;
   loginWithCredentials?: Resolver<
-    Maybe<IResolversTypes["Boolean"]>,
+    IResolversTypes["Boolean"],
     ParentType,
     ContextType,
     RequireFields<IMutationLoginWithCredentialsArgs, "email" | "password">
   >;
   now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
   resetPassword?: Resolver<
-    Maybe<IResolversTypes["Boolean"]>,
+    IResolversTypes["Boolean"],
     ParentType,
     ContextType,
     RequireFields<IMutationResetPasswordArgs, "password" | "token">

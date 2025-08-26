@@ -2,11 +2,10 @@
   "name": "fairshare-api",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "index.js",
   "scripts": {
     "build": "swc --source-maps true --out-dir .build src",
-    "dev": "nodemon --quiet -e ts,tsx -w src --exec \"pnpm run build && cross-env TZ=UTC node --no-warnings --enable-source-maps ./.build/src/server.js\"",
+    "dev": "nodemon --quiet -e ts,tsx -w src --exec \"pnpm run build && cross-env TZ=UTC node --no-warnings --enable-source-maps ./.build/src/server\"",
     "codegen": "graphql-codegen --config codegen.yml && prettier --write src/graphql/types/graphql.ts"
   },
   "keywords": [],
@@ -26,6 +25,7 @@
     "graphql-tag": "^2.12.6",
     "immutable": "^5.1.3",
     "lodash": "^4.17.21",
+    "lodash.pickby": "^4.6.0",
     "mongodb": "^6.18.0",
     "mongoose": "^8.17.1",
     "nodemailer": "^7.0.5",
@@ -43,7 +43,6 @@
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.23",
-    "@types/lodash-es": "^4.17.12",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^24.3.0",
     "@types/nodemailer": "^7.0.1",
