@@ -10,7 +10,7 @@ export default async function createUser(
   input: ICreateUserInput
 ) {
   const userExists = await collections.users.findOne({ email: input.email });
-
+  console.log("CreateUser called with input:", input);
   if (userExists) {
     throw new ConflictError("User already exists");
   }

@@ -30,11 +30,11 @@ const UserModule: GraphQLModule = {
     }
 
     extend type Mutation {
-      loginWithCredentials(email: String!, password: String!): Boolean
+      loginWithCredentials(email: String!, password: String!): Boolean!
 
-      createUser(input: CreateUserInput!): Boolean
-      forgotPassword(email: String!): Boolean
-      resetPassword(token: String!, password: String!): Boolean
+      createUser(input: CreateUserInput!): Boolean!
+      forgotPassword(email: String!): Boolean!
+      resetPassword(token: String!, password: String!): Boolean!
     }
   `,
   resolvers: {
@@ -42,6 +42,8 @@ const UserModule: GraphQLModule = {
 
     Mutation: {
       createUser: async (_source, args, ctx) => {
+        console.log("CTX dentro do resolver:", ctx);
+        console.log("Args recebidos:", args);
         return createUser(ctx.collections, args.input);
       },
       forgotPassword: async (_source, args, ctx) => {

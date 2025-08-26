@@ -99,12 +99,12 @@ scalar MAC
 
 type Mutation {
   createTransactionGroup(input: CreateTransactionGroupInput!): TransactionGroup!
-  createUser(input: CreateUserInput!): Boolean
+  createUser(input: CreateUserInput!): Boolean!
   deleteTransactionGroup(_id: ObjectID!): Boolean!
-  forgotPassword(email: String!): Boolean
-  loginWithCredentials(email: String!, password: String!): Boolean
+  forgotPassword(email: String!): Boolean!
+  loginWithCredentials(email: String!, password: String!): Boolean!
   now: BigInt
-  resetPassword(password: String!, token: String!): Boolean
+  resetPassword(password: String!, token: String!): Boolean!
   updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
 }
 
