@@ -18,6 +18,11 @@ enum CacheControlScope {
 
 scalar CountryCode
 
+input CreateTransactionGroupInput {
+  description: String!
+  iconProperties: IconPropertiesInput!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -58,6 +63,18 @@ scalar ISBN
 
 scalar ISO8601Duration
 
+type IconProperties {
+  background: String!
+  color: String!
+  icon: String!
+}
+
+input IconPropertiesInput {
+  background: String!
+  color: String!
+  icon: String!
+}
+
 scalar JSON
 
 scalar JSONObject
@@ -81,11 +98,14 @@ scalar Longitude
 scalar MAC
 
 type Mutation {
+  createTransactionGroup(input: CreateTransactionGroupInput!): TransactionGroup!
   createUser(input: CreateUserInput!): Boolean
+  deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean
   loginWithCredentials(email: String!, password: String!): Boolean
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean
+  updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
 }
 
 scalar NegativeFloat
@@ -132,6 +152,7 @@ scalar PostalCode
 
 type Query {
   now: BigInt
+  transactionGroupById(_id: ObjectID): TransactionGroup
   viewer: Viewer
 }
 
@@ -149,6 +170,13 @@ scalar TimeZone
 
 scalar Timestamp
 
+type TransactionGroup {
+  _id: ObjectID!
+  description: String!
+  iconProperties: IconProperties!
+  owner: ObjectID!
+}
+
 scalar URL
 
 scalar USCurrency
@@ -158,6 +186,11 @@ scalar UUID
 scalar UnsignedFloat
 
 scalar UnsignedInt
+
+input UpdateTransactionGroupInput {
+  description: String!
+  iconProperties: IconPropertiesInput!
+}
 
 scalar UtcOffset
 

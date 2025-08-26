@@ -4,7 +4,7 @@ import modules from "../module";
 
 const resolvers = Object.assign(
   {},
-  ...modules.map((m) => m.resolvers).filter(Boolean) // remove undefined
+  ...modules.map((m) => m.resolvers).filter(Boolean)
 );
 
 const schema = makeExecutableSchema({
