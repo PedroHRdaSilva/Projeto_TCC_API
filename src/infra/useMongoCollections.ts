@@ -1,7 +1,11 @@
 import type { MongoClient } from "mongodb";
 import { User } from "../module/users/models/User";
 import { Collections } from "./types/Collections";
-import { Transaction } from "../module/transaction/models/TransactionGroup";
+import { TransactionGroup } from "../module/transaction/models/TransactionGroup";
+import {
+  TransactionCategory,
+  TransactionCategoryCustom,
+} from "../module/transaction/models/TransactionCategory";
 
 export default function useMongoCollections(
   mongoClient: MongoClient
@@ -10,6 +14,16 @@ export default function useMongoCollections(
 
   return {
     users: db.collection<User>("users"),
-    transaction: db.collection<Transaction>("transaction"),
+    transactions: {
+      group: db.collection<TransactionGroup>("transactions.group"),
+      categories: {
+        defaults: db.collection<TransactionCategory>(
+          "transactions.categories.defaults"
+        ),
+        custom: db.collection<TransactionCategoryCustom>(
+          "transactions.categories.custom"
+        ),
+      },
+    },
   };
 }

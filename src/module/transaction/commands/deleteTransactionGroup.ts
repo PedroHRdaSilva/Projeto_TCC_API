@@ -8,7 +8,7 @@ export default async function deleteTransactionGroup(
   viewer: Viewer,
   _id: ObjectId
 ) {
-  const transaction = await collections.transactionGroup.findOne({
+  const transaction = await collections.transactions.group.findOne({
     _id,
     deletedAt: { $exists: false },
   });
@@ -17,7 +17,7 @@ export default async function deleteTransactionGroup(
     throw new NotFoundError();
   }
 
-  await collections.transactionGroup.updateOne(
+  await collections.transactions.group.updateOne(
     { _id },
     {
       $set: {

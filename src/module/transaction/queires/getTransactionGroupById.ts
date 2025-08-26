@@ -9,7 +9,7 @@ export default async function getTransactionGroupById(
   if (_id == undefined) {
     return null;
   }
-  const transactionGroup = await collections.transactionGroup.findOne({
+  const transactionGroup = await collections.transactions.group.findOne({
     _id,
     deletedAt: { $exists: false },
   });

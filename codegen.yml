@@ -21,12 +21,8 @@ generates:
         Cursor: ../../utils/Cursor#default
         ObjectID: mongodb#ObjectId
       showUnusedMappers: true
-      # mappers:
-      #   # TransactionGroup: ../../modules/transactions/models/TransactionGroup#TransactionGroup
-      #   # Transaction: ../../modules/transactions/models/Transaction#Transaction
-      #   # StandardTransaction: ../../modules/transactions/models/Transaction#Transaction
-      #   # SplitTransaction: ../../modules/transactions/models/Transaction#Transaction
-      #   # TransactionsByCategoryChart: ../../modules/transactions/models/TransactionsByCategoryChart#TransactionsByCategoryChart
+      mappers:
+        TransactionCategory: ./module/transaction/models/TransactionCategory#TransactionCategory
     plugins:
       - "typescript"
       - "typescript-resolvers"

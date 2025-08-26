@@ -18,6 +18,20 @@ enum CacheControlScope {
 
 scalar CountryCode
 
+input CreateCategoryCustomInput {
+  categoryDefaultId: ObjectID
+  description: String!
+  iconProperties: IconPropertiesInput!
+  transactionGroupId: ObjectID!
+  type: TransactionCategoryTypeEnum!
+}
+
+input CreateCategoryDefaultInput {
+  description: String!
+  iconProperties: IconPropertiesInput!
+  type: TransactionCategoryTypeEnum!
+}
+
 input CreateTransactionGroupInput {
   description: String!
   iconProperties: IconPropertiesInput!
@@ -98,13 +112,16 @@ scalar Longitude
 scalar MAC
 
 type Mutation {
+  createCategory(input: CreateCategoryCustomInput!): TransactionCategory!
   createTransactionGroup(input: CreateTransactionGroupInput!): TransactionGroup!
   createUser(input: CreateUserInput!): Boolean!
+  deleteCategory(_id: ObjectID!, groupId: ObjectID!): Boolean
   deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean!
   loginWithCredentials(email: String!, password: String!): Boolean!
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
+  updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
   updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
 }
 
@@ -151,6 +168,8 @@ scalar PositiveInt
 scalar PostalCode
 
 type Query {
+  categoriesByGroupId(transactionGroupId: ObjectID!): [TransactionCategory!]!
+  categoryById(categoryId: ObjectID!): TransactionCategory
   now: BigInt
   transactionGroupById(_id: ObjectID): TransactionGroup
   viewer: Viewer
@@ -170,6 +189,19 @@ scalar TimeZone
 
 scalar Timestamp
 
+type TransactionCategory {
+  _id: ObjectID!
+  description: String!
+  iconProperties: IconProperties!
+  isDefault: Boolean!
+  type: TransactionCategoryTypeEnum!
+}
+
+enum TransactionCategoryTypeEnum {
+  EARNINGS
+  EXPENSES
+}
+
 type TransactionGroup {
   _id: ObjectID!
   description: String!
@@ -186,6 +218,14 @@ scalar UUID
 scalar UnsignedFloat
 
 scalar UnsignedInt
+
+input UpdateCustomInput {
+  categoryDefaultId: ObjectID
+  description: String!
+  iconProperties: IconPropertiesInput!
+  transactionGroupId: ObjectID!
+  type: TransactionCategoryTypeEnum!
+}
 
 input UpdateTransactionGroupInput {
   description: String!
