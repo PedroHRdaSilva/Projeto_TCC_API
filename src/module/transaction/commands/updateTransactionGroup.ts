@@ -9,7 +9,7 @@ export default async function updateTransactionGroup(
   _id: ObjectId,
   input: IUpdateTransactionGroupInput
 ) {
-  const transactionGroup = await collections.transactionGroup.findOne({
+  const transactionGroup = await collections.transactions.group.findOne({
     _id,
     deletedAt: { $exists: false },
   });
@@ -27,7 +27,7 @@ export default async function updateTransactionGroup(
     description: input.description || undefined,
   });
 
-  await collections.transactionGroup.updateOne(
+  await collections.transactions.group.updateOne(
     { _id },
     {
       $set: {

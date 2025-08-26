@@ -23,7 +23,7 @@ export default async function createTransactionGroup(
     updatedAt: new Date(),
   };
 
-  await collections.transactionGroup.insertOne(transactionGroup);
+  await collections.transactions.group.insertOne(transactionGroup);
 
   return transactionGroup;
 }
