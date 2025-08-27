@@ -1,7 +1,7 @@
 // FUTURE REFACTOR
 import { GraphQLScalarType, Kind } from "graphql";
 import { Map } from "immutable";
-import Cursor from "../../utils/Cursor";
+import Cursor from "~/utils/Cursor";
 
 const CursorScalar = new GraphQLScalarType({
   name: "Cursor",

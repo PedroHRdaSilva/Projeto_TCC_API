@@ -1,4 +1,4 @@
-import type { DefaultFields } from "../../../utils/CommonTypes";
+import type { DefaultFields } from "~/utils/CommonTypes";
 
 export type User = DefaultFields & {
   email: string;

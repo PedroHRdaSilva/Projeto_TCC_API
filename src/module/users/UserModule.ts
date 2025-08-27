@@ -1,9 +1,9 @@
 import gql from "graphql-tag";
-import createUser from "./commands/createUser";
-import forgotPassword from "./commands/forgotPassword";
-import resetPassword from "./commands/resetPassword";
-import authenticateUser from "./commands/authenticateUser";
-import { GraphQLModule } from "../../graphql/module";
+import createUser from "~/module/users/commands/createUser";
+import forgotPassword from "~/module/users/commands/forgotPassword";
+import resetPassword from "~/module/users/commands/resetPassword";
+import authenticateUser from "~/module/users/commands/authenticateUser";
+import { GraphQLModule } from "~/graphql/module";
 
 const UserModule: GraphQLModule = {
   typeDefs: gql`

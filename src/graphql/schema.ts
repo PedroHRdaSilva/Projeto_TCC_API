@@ -1,6 +1,6 @@
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { typeDefs as scalarTypeDefs } from "graphql-scalars";
-import modules from "../module";
+import modules from "~/module";
 import { merge } from "immutable";
 
 const schema = makeExecutableSchema({

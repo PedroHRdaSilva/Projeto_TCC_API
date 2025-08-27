@@ -4,11 +4,11 @@ import "dotenv/config";
 import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import schema from "../src/graphql/schema";
+import schema from "~/graphql/schema";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
-import useMongoCollections from "./infra/useMongoCollections";
-import connectToMongo from "./infra/connectToMongo";
+import useMongoCollections from "~/infra/useMongoCollections";
+import connectToMongo from "~/infra/connectToMongo";
 
 const app = express();
 

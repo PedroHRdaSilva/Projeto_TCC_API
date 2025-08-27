@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import { resolvers as scalarResolvers } from "graphql-scalars";
-import ObjectIDScalar from "../graphql/scalars/ObjectIDScalar";
-import CursorScalar from "../graphql/scalars/CursorScalar";
+import ObjectIDScalar from "~/graphql/scalars/ObjectIDScalar";
+import CursorScalar from "~/graphql/scalars/CursorScalar";
 
 export default {
   typeDefs: gql`

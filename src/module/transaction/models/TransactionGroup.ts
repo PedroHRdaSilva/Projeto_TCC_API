@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import type { DefaultFields } from "../../../utils/CommonTypes";
+import type { DefaultFields } from "~/utils/CommonTypes";
 
 export type TransactionGroup = DefaultFields & {
   ownerId: ObjectId;
