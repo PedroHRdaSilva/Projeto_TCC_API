@@ -1,5 +1,5 @@
-import { Collections } from "../../../infra/types/Collections";
-import { UserNotFoundError } from "../../../infra/GraphQLErrors";
+import { Collections } from "~/infra/types/Collections";
+import { UserNotFoundError } from "~/infra/GraphQLErrors";
 import bcrypt from "bcryptjs";
 
 export default async function resetPassword(

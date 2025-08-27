@@ -1,5 +1,5 @@
-import { Collections } from "../../infra/types/Collections";
-import { Viewer } from "../../infra/types/Viewer";
+import { Collections } from "~/infra/types/Collections";
+import { Viewer } from "~/infra/types/Viewer";
 
 export type TGraphQLContext = {
   collections: Collections;

@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
-import { Collections } from "../../../infra/types/Collections";
+import { Collections } from "~/infra/types/Collections";
 import { compareSync } from "bcryptjs";
-import { UserNotFoundError } from "../../../infra/GraphQLErrors";
+import { UserNotFoundError } from "~/infra/GraphQLErrors";
 
 export default async function authenticateUser(
   collections: Collections,

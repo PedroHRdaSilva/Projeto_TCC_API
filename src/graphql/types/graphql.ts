@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import Cursor from "../../utils/Cursor";
 import { ObjectId } from "mongodb";
 import {
@@ -1166,3 +1167,1173 @@ export type IDirectiveResolvers<ContextType = TGraphQLContext> =
   ResolversObject<{
     cacheControl?: ICacheControlDirectiveResolver<any, any, ContextType>;
   }>;
+=======
+import Cursor from "../../utils/Cursor";
+import { ObjectId } from "mongodb";
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
+import { TransactionCategory } from "./module/transaction/models/TransactionCategory";
+import { TGraphQLContext } from "./GraphqlContext";
+export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+    };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  AccountNumber: { input: any; output: any };
+  BigInt: { input: any; output: any };
+  Byte: { input: any; output: any };
+  CountryCode: { input: any; output: any };
+  Currency: { input: any; output: any };
+  Cursor: { input: Cursor; output: Cursor };
+  DID: { input: any; output: any };
+  Date: { input: any; output: any };
+  DateTime: { input: any; output: any };
+  Duration: { input: any; output: any };
+  EmailAddress: { input: any; output: any };
+  GUID: { input: any; output: any };
+  HSL: { input: any; output: any };
+  HSLA: { input: any; output: any };
+  HexColorCode: { input: any; output: any };
+  Hexadecimal: { input: any; output: any };
+  IBAN: { input: any; output: any };
+  IPv4: { input: any; output: any };
+  IPv6: { input: any; output: any };
+  ISBN: { input: any; output: any };
+  ISO8601Duration: { input: any; output: any };
+  JSON: { input: any; output: any };
+  JSONObject: { input: any; output: any };
+  JWT: { input: any; output: any };
+  Latitude: { input: any; output: any };
+  LocalDate: { input: any; output: any };
+  LocalEndTime: { input: any; output: any };
+  LocalTime: { input: any; output: any };
+  Locale: { input: any; output: any };
+  Long: { input: any; output: any };
+  Longitude: { input: any; output: any };
+  MAC: { input: any; output: any };
+  NegativeFloat: { input: any; output: any };
+  NegativeInt: { input: any; output: any };
+  NonEmptyString: { input: any; output: any };
+  NonNegativeFloat: { input: any; output: any };
+  NonNegativeInt: { input: any; output: any };
+  NonPositiveFloat: { input: any; output: any };
+  NonPositiveInt: { input: any; output: any };
+  ObjectID: { input: ObjectId; output: ObjectId };
+  PhoneNumber: { input: any; output: any };
+  Port: { input: any; output: any };
+  PositiveFloat: { input: any; output: any };
+  PositiveInt: { input: any; output: any };
+  PostalCode: { input: any; output: any };
+  RGB: { input: any; output: any };
+  RGBA: { input: any; output: any };
+  RoutingNumber: { input: any; output: any };
+  SafeInt: { input: any; output: any };
+  Time: { input: any; output: any };
+  TimeZone: { input: any; output: any };
+  Timestamp: { input: any; output: any };
+  URL: { input: any; output: any };
+  USCurrency: { input: any; output: any };
+  UUID: { input: any; output: any };
+  UnsignedFloat: { input: any; output: any };
+  UnsignedInt: { input: any; output: any };
+  UtcOffset: { input: any; output: any };
+  Void: { input: any; output: any };
+};
+
+export type IAuthenticatedUser = {
+  __typename?: "AuthenticatedUser";
+  accessToken: Scalars["String"]["output"];
+  email: Scalars["String"]["output"];
+};
+
+export enum ICacheControlScope {
+  Private = "PRIVATE",
+  Public = "PUBLIC",
+}
+
+export type ICreateCategoryCustomInput = {
+  categoryDefaultId?: InputMaybe<Scalars["ObjectID"]["input"]>;
+  description: Scalars["String"]["input"];
+  iconProperties: IIconPropertiesInput;
+  transactionGroupId: Scalars["ObjectID"]["input"];
+  type: ITransactionCategoryTypeEnum;
+};
+
+export type ICreateCategoryDefaultInput = {
+  description: Scalars["String"]["input"];
+  iconProperties: IIconPropertiesInput;
+  type: ITransactionCategoryTypeEnum;
+};
+
+export type ICreateTransactionGroupInput = {
+  description: Scalars["String"]["input"];
+  iconProperties: IIconPropertiesInput;
+};
+
+export type ICreateUserInput = {
+  email: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+};
+
+export type IIconProperties = {
+  __typename?: "IconProperties";
+  background: Scalars["String"]["output"];
+  color: Scalars["String"]["output"];
+  icon: Scalars["String"]["output"];
+};
+
+export type IIconPropertiesInput = {
+  background: Scalars["String"]["input"];
+  color: Scalars["String"]["input"];
+  icon: Scalars["String"]["input"];
+};
+
+export type IMutation = {
+  __typename?: "Mutation";
+  createCategory: ITransactionCategory;
+  createTransactionGroup: ITransactionGroup;
+  createUser: Scalars["Boolean"]["output"];
+  deleteCategory?: Maybe<Scalars["Boolean"]["output"]>;
+  deleteTransactionGroup: Scalars["Boolean"]["output"];
+  forgotPassword: Scalars["Boolean"]["output"];
+  loginWithCredentials: Scalars["Boolean"]["output"];
+  now?: Maybe<Scalars["BigInt"]["output"]>;
+  resetPassword: Scalars["Boolean"]["output"];
+  updateCategory: ITransactionCategory;
+  updateTransactionGroup: ITransactionGroup;
+};
+
+export type IMutationCreateCategoryArgs = {
+  input: ICreateCategoryCustomInput;
+};
+
+export type IMutationCreateTransactionGroupArgs = {
+  input: ICreateTransactionGroupInput;
+};
+
+export type IMutationCreateUserArgs = {
+  input: ICreateUserInput;
+};
+
+export type IMutationDeleteCategoryArgs = {
+  _id: Scalars["ObjectID"]["input"];
+  groupId: Scalars["ObjectID"]["input"];
+};
+
+export type IMutationDeleteTransactionGroupArgs = {
+  _id: Scalars["ObjectID"]["input"];
+};
+
+export type IMutationForgotPasswordArgs = {
+  email: Scalars["String"]["input"];
+};
+
+export type IMutationLoginWithCredentialsArgs = {
+  email: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+};
+
+export type IMutationResetPasswordArgs = {
+  password: Scalars["String"]["input"];
+  token: Scalars["String"]["input"];
+};
+
+export type IMutationUpdateCategoryArgs = {
+  _id: Scalars["ObjectID"]["input"];
+  input: IUpdateCustomInput;
+};
+
+export type IMutationUpdateTransactionGroupArgs = {
+  _id: Scalars["ObjectID"]["input"];
+  input: IUpdateTransactionGroupInput;
+};
+
+export type IObjectKeyValue = {
+  __typename?: "ObjectKeyValue";
+  key: Scalars["String"]["output"];
+  value: Scalars["String"]["output"];
+};
+
+export type IObjectKeyValueInput = {
+  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
+};
+
+export type IPageInfo = {
+  __typename?: "PageInfo";
+  cursor?: Maybe<Scalars["Cursor"]["output"]>;
+  hasNextPage: Scalars["Boolean"]["output"];
+  totalCount: Scalars["Int"]["output"];
+};
+
+export type IQuery = {
+  __typename?: "Query";
+  categoriesByGroupId: Array<ITransactionCategory>;
+  categoryById?: Maybe<ITransactionCategory>;
+  now?: Maybe<Scalars["BigInt"]["output"]>;
+  transactionGroupById?: Maybe<ITransactionGroup>;
+  viewer?: Maybe<IViewer>;
+};
+
+export type IQueryCategoriesByGroupIdArgs = {
+  transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
+export type IQueryCategoryByIdArgs = {
+  categoryId: Scalars["ObjectID"]["input"];
+};
+
+export type IQueryTransactionGroupByIdArgs = {
+  _id?: InputMaybe<Scalars["ObjectID"]["input"]>;
+};
+
+export type ITransactionCategory = {
+  __typename?: "TransactionCategory";
+  _id: Scalars["ObjectID"]["output"];
+  description: Scalars["String"]["output"];
+  iconProperties: IIconProperties;
+  isDefault: Scalars["Boolean"]["output"];
+  type: ITransactionCategoryTypeEnum;
+};
+
+export enum ITransactionCategoryTypeEnum {
+  Earnings = "EARNINGS",
+  Expenses = "EXPENSES",
+}
+
+export type ITransactionGroup = {
+  __typename?: "TransactionGroup";
+  _id: Scalars["ObjectID"]["output"];
+  description: Scalars["String"]["output"];
+  iconProperties: IIconProperties;
+  owner: Scalars["ObjectID"]["output"];
+};
+
+export type IUpdateCustomInput = {
+  categoryDefaultId?: InputMaybe<Scalars["ObjectID"]["input"]>;
+  description: Scalars["String"]["input"];
+  iconProperties: IIconPropertiesInput;
+  transactionGroupId: Scalars["ObjectID"]["input"];
+  type: ITransactionCategoryTypeEnum;
+};
+
+export type IUpdateTransactionGroupInput = {
+  description: Scalars["String"]["input"];
+  iconProperties: IIconPropertiesInput;
+};
+
+export type IViewer = {
+  __typename?: "Viewer";
+  _id: Scalars["ObjectID"]["output"];
+  email: Scalars["String"]["output"];
+  isAdmin: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
+};
+
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
+
+export type ResolverTypeWrapper<T> = Promise<T> | T;
+
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+
+export type ResolverFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => Promise<TResult> | TResult;
+
+export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
+
+export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => TResult | Promise<TResult>;
+
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
+}
+
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
+  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
+}
+
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> =
+  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
+  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
+
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {},
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
+
+export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
+  parent: TParent,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
+
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => boolean | Promise<boolean>;
+
+export type NextResolverFn<T> = () => Promise<T>;
+
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {},
+> = (
+  next: NextResolverFn<TResult>,
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => TResult | Promise<TResult>;
+
+/** Mapping between all available schema types and the resolvers types */
+export type IResolversTypes = ResolversObject<{
+  AccountNumber: ResolverTypeWrapper<
+    Partial<Scalars["AccountNumber"]["output"]>
+  >;
+  AuthenticatedUser: ResolverTypeWrapper<Partial<IAuthenticatedUser>>;
+  BigInt: ResolverTypeWrapper<Partial<Scalars["BigInt"]["output"]>>;
+  Boolean: ResolverTypeWrapper<Partial<Scalars["Boolean"]["output"]>>;
+  Byte: ResolverTypeWrapper<Partial<Scalars["Byte"]["output"]>>;
+  CacheControlScope: ResolverTypeWrapper<Partial<ICacheControlScope>>;
+  CountryCode: ResolverTypeWrapper<Partial<Scalars["CountryCode"]["output"]>>;
+  CreateCategoryCustomInput: ResolverTypeWrapper<
+    Partial<ICreateCategoryCustomInput>
+  >;
+  CreateCategoryDefaultInput: ResolverTypeWrapper<
+    Partial<ICreateCategoryDefaultInput>
+  >;
+  CreateTransactionGroupInput: ResolverTypeWrapper<
+    Partial<ICreateTransactionGroupInput>
+  >;
+  CreateUserInput: ResolverTypeWrapper<Partial<ICreateUserInput>>;
+  Currency: ResolverTypeWrapper<Partial<Scalars["Currency"]["output"]>>;
+  Cursor: ResolverTypeWrapper<Partial<Scalars["Cursor"]["output"]>>;
+  DID: ResolverTypeWrapper<Partial<Scalars["DID"]["output"]>>;
+  Date: ResolverTypeWrapper<Partial<Scalars["Date"]["output"]>>;
+  DateTime: ResolverTypeWrapper<Partial<Scalars["DateTime"]["output"]>>;
+  Duration: ResolverTypeWrapper<Partial<Scalars["Duration"]["output"]>>;
+  EmailAddress: ResolverTypeWrapper<Partial<Scalars["EmailAddress"]["output"]>>;
+  GUID: ResolverTypeWrapper<Partial<Scalars["GUID"]["output"]>>;
+  HSL: ResolverTypeWrapper<Partial<Scalars["HSL"]["output"]>>;
+  HSLA: ResolverTypeWrapper<Partial<Scalars["HSLA"]["output"]>>;
+  HexColorCode: ResolverTypeWrapper<Partial<Scalars["HexColorCode"]["output"]>>;
+  Hexadecimal: ResolverTypeWrapper<Partial<Scalars["Hexadecimal"]["output"]>>;
+  IBAN: ResolverTypeWrapper<Partial<Scalars["IBAN"]["output"]>>;
+  IPv4: ResolverTypeWrapper<Partial<Scalars["IPv4"]["output"]>>;
+  IPv6: ResolverTypeWrapper<Partial<Scalars["IPv6"]["output"]>>;
+  ISBN: ResolverTypeWrapper<Partial<Scalars["ISBN"]["output"]>>;
+  ISO8601Duration: ResolverTypeWrapper<
+    Partial<Scalars["ISO8601Duration"]["output"]>
+  >;
+  IconProperties: ResolverTypeWrapper<Partial<IIconProperties>>;
+  IconPropertiesInput: ResolverTypeWrapper<Partial<IIconPropertiesInput>>;
+  Int: ResolverTypeWrapper<Partial<Scalars["Int"]["output"]>>;
+  JSON: ResolverTypeWrapper<Partial<Scalars["JSON"]["output"]>>;
+  JSONObject: ResolverTypeWrapper<Partial<Scalars["JSONObject"]["output"]>>;
+  JWT: ResolverTypeWrapper<Partial<Scalars["JWT"]["output"]>>;
+  Latitude: ResolverTypeWrapper<Partial<Scalars["Latitude"]["output"]>>;
+  LocalDate: ResolverTypeWrapper<Partial<Scalars["LocalDate"]["output"]>>;
+  LocalEndTime: ResolverTypeWrapper<Partial<Scalars["LocalEndTime"]["output"]>>;
+  LocalTime: ResolverTypeWrapper<Partial<Scalars["LocalTime"]["output"]>>;
+  Locale: ResolverTypeWrapper<Partial<Scalars["Locale"]["output"]>>;
+  Long: ResolverTypeWrapper<Partial<Scalars["Long"]["output"]>>;
+  Longitude: ResolverTypeWrapper<Partial<Scalars["Longitude"]["output"]>>;
+  MAC: ResolverTypeWrapper<Partial<Scalars["MAC"]["output"]>>;
+  Mutation: ResolverTypeWrapper<{}>;
+  NegativeFloat: ResolverTypeWrapper<
+    Partial<Scalars["NegativeFloat"]["output"]>
+  >;
+  NegativeInt: ResolverTypeWrapper<Partial<Scalars["NegativeInt"]["output"]>>;
+  NonEmptyString: ResolverTypeWrapper<
+    Partial<Scalars["NonEmptyString"]["output"]>
+  >;
+  NonNegativeFloat: ResolverTypeWrapper<
+    Partial<Scalars["NonNegativeFloat"]["output"]>
+  >;
+  NonNegativeInt: ResolverTypeWrapper<
+    Partial<Scalars["NonNegativeInt"]["output"]>
+  >;
+  NonPositiveFloat: ResolverTypeWrapper<
+    Partial<Scalars["NonPositiveFloat"]["output"]>
+  >;
+  NonPositiveInt: ResolverTypeWrapper<
+    Partial<Scalars["NonPositiveInt"]["output"]>
+  >;
+  ObjectID: ResolverTypeWrapper<Partial<Scalars["ObjectID"]["output"]>>;
+  ObjectKeyValue: ResolverTypeWrapper<Partial<IObjectKeyValue>>;
+  ObjectKeyValueInput: ResolverTypeWrapper<Partial<IObjectKeyValueInput>>;
+  PageInfo: ResolverTypeWrapper<Partial<IPageInfo>>;
+  PhoneNumber: ResolverTypeWrapper<Partial<Scalars["PhoneNumber"]["output"]>>;
+  Port: ResolverTypeWrapper<Partial<Scalars["Port"]["output"]>>;
+  PositiveFloat: ResolverTypeWrapper<
+    Partial<Scalars["PositiveFloat"]["output"]>
+  >;
+  PositiveInt: ResolverTypeWrapper<Partial<Scalars["PositiveInt"]["output"]>>;
+  PostalCode: ResolverTypeWrapper<Partial<Scalars["PostalCode"]["output"]>>;
+  Query: ResolverTypeWrapper<{}>;
+  RGB: ResolverTypeWrapper<Partial<Scalars["RGB"]["output"]>>;
+  RGBA: ResolverTypeWrapper<Partial<Scalars["RGBA"]["output"]>>;
+  RoutingNumber: ResolverTypeWrapper<
+    Partial<Scalars["RoutingNumber"]["output"]>
+  >;
+  SafeInt: ResolverTypeWrapper<Partial<Scalars["SafeInt"]["output"]>>;
+  String: ResolverTypeWrapper<Partial<Scalars["String"]["output"]>>;
+  Time: ResolverTypeWrapper<Partial<Scalars["Time"]["output"]>>;
+  TimeZone: ResolverTypeWrapper<Partial<Scalars["TimeZone"]["output"]>>;
+  Timestamp: ResolverTypeWrapper<Partial<Scalars["Timestamp"]["output"]>>;
+  TransactionCategory: ResolverTypeWrapper<TransactionCategory>;
+  TransactionCategoryTypeEnum: ResolverTypeWrapper<
+    Partial<ITransactionCategoryTypeEnum>
+  >;
+  TransactionGroup: ResolverTypeWrapper<Partial<ITransactionGroup>>;
+  URL: ResolverTypeWrapper<Partial<Scalars["URL"]["output"]>>;
+  USCurrency: ResolverTypeWrapper<Partial<Scalars["USCurrency"]["output"]>>;
+  UUID: ResolverTypeWrapper<Partial<Scalars["UUID"]["output"]>>;
+  UnsignedFloat: ResolverTypeWrapper<
+    Partial<Scalars["UnsignedFloat"]["output"]>
+  >;
+  UnsignedInt: ResolverTypeWrapper<Partial<Scalars["UnsignedInt"]["output"]>>;
+  UpdateCustomInput: ResolverTypeWrapper<Partial<IUpdateCustomInput>>;
+  UpdateTransactionGroupInput: ResolverTypeWrapper<
+    Partial<IUpdateTransactionGroupInput>
+  >;
+  UtcOffset: ResolverTypeWrapper<Partial<Scalars["UtcOffset"]["output"]>>;
+  Viewer: ResolverTypeWrapper<Partial<IViewer>>;
+  Void: ResolverTypeWrapper<Partial<Scalars["Void"]["output"]>>;
+}>;
+
+/** Mapping between all available schema types and the resolvers parents */
+export type IResolversParentTypes = ResolversObject<{
+  AccountNumber: Partial<Scalars["AccountNumber"]["output"]>;
+  AuthenticatedUser: Partial<IAuthenticatedUser>;
+  BigInt: Partial<Scalars["BigInt"]["output"]>;
+  Boolean: Partial<Scalars["Boolean"]["output"]>;
+  Byte: Partial<Scalars["Byte"]["output"]>;
+  CountryCode: Partial<Scalars["CountryCode"]["output"]>;
+  CreateCategoryCustomInput: Partial<ICreateCategoryCustomInput>;
+  CreateCategoryDefaultInput: Partial<ICreateCategoryDefaultInput>;
+  CreateTransactionGroupInput: Partial<ICreateTransactionGroupInput>;
+  CreateUserInput: Partial<ICreateUserInput>;
+  Currency: Partial<Scalars["Currency"]["output"]>;
+  Cursor: Partial<Scalars["Cursor"]["output"]>;
+  DID: Partial<Scalars["DID"]["output"]>;
+  Date: Partial<Scalars["Date"]["output"]>;
+  DateTime: Partial<Scalars["DateTime"]["output"]>;
+  Duration: Partial<Scalars["Duration"]["output"]>;
+  EmailAddress: Partial<Scalars["EmailAddress"]["output"]>;
+  GUID: Partial<Scalars["GUID"]["output"]>;
+  HSL: Partial<Scalars["HSL"]["output"]>;
+  HSLA: Partial<Scalars["HSLA"]["output"]>;
+  HexColorCode: Partial<Scalars["HexColorCode"]["output"]>;
+  Hexadecimal: Partial<Scalars["Hexadecimal"]["output"]>;
+  IBAN: Partial<Scalars["IBAN"]["output"]>;
+  IPv4: Partial<Scalars["IPv4"]["output"]>;
+  IPv6: Partial<Scalars["IPv6"]["output"]>;
+  ISBN: Partial<Scalars["ISBN"]["output"]>;
+  ISO8601Duration: Partial<Scalars["ISO8601Duration"]["output"]>;
+  IconProperties: Partial<IIconProperties>;
+  IconPropertiesInput: Partial<IIconPropertiesInput>;
+  Int: Partial<Scalars["Int"]["output"]>;
+  JSON: Partial<Scalars["JSON"]["output"]>;
+  JSONObject: Partial<Scalars["JSONObject"]["output"]>;
+  JWT: Partial<Scalars["JWT"]["output"]>;
+  Latitude: Partial<Scalars["Latitude"]["output"]>;
+  LocalDate: Partial<Scalars["LocalDate"]["output"]>;
+  LocalEndTime: Partial<Scalars["LocalEndTime"]["output"]>;
+  LocalTime: Partial<Scalars["LocalTime"]["output"]>;
+  Locale: Partial<Scalars["Locale"]["output"]>;
+  Long: Partial<Scalars["Long"]["output"]>;
+  Longitude: Partial<Scalars["Longitude"]["output"]>;
+  MAC: Partial<Scalars["MAC"]["output"]>;
+  Mutation: {};
+  NegativeFloat: Partial<Scalars["NegativeFloat"]["output"]>;
+  NegativeInt: Partial<Scalars["NegativeInt"]["output"]>;
+  NonEmptyString: Partial<Scalars["NonEmptyString"]["output"]>;
+  NonNegativeFloat: Partial<Scalars["NonNegativeFloat"]["output"]>;
+  NonNegativeInt: Partial<Scalars["NonNegativeInt"]["output"]>;
+  NonPositiveFloat: Partial<Scalars["NonPositiveFloat"]["output"]>;
+  NonPositiveInt: Partial<Scalars["NonPositiveInt"]["output"]>;
+  ObjectID: Partial<Scalars["ObjectID"]["output"]>;
+  ObjectKeyValue: Partial<IObjectKeyValue>;
+  ObjectKeyValueInput: Partial<IObjectKeyValueInput>;
+  PageInfo: Partial<IPageInfo>;
+  PhoneNumber: Partial<Scalars["PhoneNumber"]["output"]>;
+  Port: Partial<Scalars["Port"]["output"]>;
+  PositiveFloat: Partial<Scalars["PositiveFloat"]["output"]>;
+  PositiveInt: Partial<Scalars["PositiveInt"]["output"]>;
+  PostalCode: Partial<Scalars["PostalCode"]["output"]>;
+  Query: {};
+  RGB: Partial<Scalars["RGB"]["output"]>;
+  RGBA: Partial<Scalars["RGBA"]["output"]>;
+  RoutingNumber: Partial<Scalars["RoutingNumber"]["output"]>;
+  SafeInt: Partial<Scalars["SafeInt"]["output"]>;
+  String: Partial<Scalars["String"]["output"]>;
+  Time: Partial<Scalars["Time"]["output"]>;
+  TimeZone: Partial<Scalars["TimeZone"]["output"]>;
+  Timestamp: Partial<Scalars["Timestamp"]["output"]>;
+  TransactionCategory: TransactionCategory;
+  TransactionGroup: Partial<ITransactionGroup>;
+  URL: Partial<Scalars["URL"]["output"]>;
+  USCurrency: Partial<Scalars["USCurrency"]["output"]>;
+  UUID: Partial<Scalars["UUID"]["output"]>;
+  UnsignedFloat: Partial<Scalars["UnsignedFloat"]["output"]>;
+  UnsignedInt: Partial<Scalars["UnsignedInt"]["output"]>;
+  UpdateCustomInput: Partial<IUpdateCustomInput>;
+  UpdateTransactionGroupInput: Partial<IUpdateTransactionGroupInput>;
+  UtcOffset: Partial<Scalars["UtcOffset"]["output"]>;
+  Viewer: Partial<IViewer>;
+  Void: Partial<Scalars["Void"]["output"]>;
+}>;
+
+export type ICacheControlDirectiveArgs = {
+  inheritMaxAge?: Maybe<Scalars["Boolean"]["input"]>;
+  maxAge?: Maybe<Scalars["Int"]["input"]>;
+  scope?: Maybe<ICacheControlScope>;
+};
+
+export type ICacheControlDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = TGraphQLContext,
+  Args = ICacheControlDirectiveArgs,
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export interface IAccountNumberScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["AccountNumber"], any> {
+  name: "AccountNumber";
+}
+
+export type IAuthenticatedUserResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["AuthenticatedUser"] = IResolversParentTypes["AuthenticatedUser"],
+> = ResolversObject<{
+  accessToken?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface IBigIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["BigInt"], any> {
+  name: "BigInt";
+}
+
+export interface IByteScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Byte"], any> {
+  name: "Byte";
+}
+
+export interface ICountryCodeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["CountryCode"], any> {
+  name: "CountryCode";
+}
+
+export interface ICurrencyScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Currency"], any> {
+  name: "Currency";
+}
+
+export interface ICursorScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Cursor"], any> {
+  name: "Cursor";
+}
+
+export interface IDidScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["DID"], any> {
+  name: "DID";
+}
+
+export interface IDateScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Date"], any> {
+  name: "Date";
+}
+
+export interface IDateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["DateTime"], any> {
+  name: "DateTime";
+}
+
+export interface IDurationScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Duration"], any> {
+  name: "Duration";
+}
+
+export interface IEmailAddressScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["EmailAddress"], any> {
+  name: "EmailAddress";
+}
+
+export interface IGuidScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["GUID"], any> {
+  name: "GUID";
+}
+
+export interface IHslScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["HSL"], any> {
+  name: "HSL";
+}
+
+export interface IHslaScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["HSLA"], any> {
+  name: "HSLA";
+}
+
+export interface IHexColorCodeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["HexColorCode"], any> {
+  name: "HexColorCode";
+}
+
+export interface IHexadecimalScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Hexadecimal"], any> {
+  name: "Hexadecimal";
+}
+
+export interface IIbanScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["IBAN"], any> {
+  name: "IBAN";
+}
+
+export interface IIPv4ScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["IPv4"], any> {
+  name: "IPv4";
+}
+
+export interface IIPv6ScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["IPv6"], any> {
+  name: "IPv6";
+}
+
+export interface IIsbnScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["ISBN"], any> {
+  name: "ISBN";
+}
+
+export interface IIso8601DurationScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["ISO8601Duration"], any> {
+  name: "ISO8601Duration";
+}
+
+export type IIconPropertiesResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["IconProperties"] = IResolversParentTypes["IconProperties"],
+> = ResolversObject<{
+  background?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  color?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  icon?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface IJsonScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["JSON"], any> {
+  name: "JSON";
+}
+
+export interface IJsonObjectScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["JSONObject"], any> {
+  name: "JSONObject";
+}
+
+export interface IJwtScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["JWT"], any> {
+  name: "JWT";
+}
+
+export interface ILatitudeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Latitude"], any> {
+  name: "Latitude";
+}
+
+export interface ILocalDateScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["LocalDate"], any> {
+  name: "LocalDate";
+}
+
+export interface ILocalEndTimeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["LocalEndTime"], any> {
+  name: "LocalEndTime";
+}
+
+export interface ILocalTimeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["LocalTime"], any> {
+  name: "LocalTime";
+}
+
+export interface ILocaleScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Locale"], any> {
+  name: "Locale";
+}
+
+export interface ILongScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Long"], any> {
+  name: "Long";
+}
+
+export interface ILongitudeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Longitude"], any> {
+  name: "Longitude";
+}
+
+export interface IMacScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["MAC"], any> {
+  name: "MAC";
+}
+
+export type IMutationResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["Mutation"] = IResolversParentTypes["Mutation"],
+> = ResolversObject<{
+  createCategory?: Resolver<
+    IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationCreateCategoryArgs, "input">
+  >;
+  createTransactionGroup?: Resolver<
+    IResolversTypes["TransactionGroup"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationCreateTransactionGroupArgs, "input">
+  >;
+  createUser?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationCreateUserArgs, "input">
+  >;
+  deleteCategory?: Resolver<
+    Maybe<IResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IMutationDeleteCategoryArgs, "_id" | "groupId">
+  >;
+  deleteTransactionGroup?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationDeleteTransactionGroupArgs, "_id">
+  >;
+  forgotPassword?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationForgotPasswordArgs, "email">
+  >;
+  loginWithCredentials?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationLoginWithCredentialsArgs, "email" | "password">
+  >;
+  now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
+  resetPassword?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationResetPasswordArgs, "password" | "token">
+  >;
+  updateCategory?: Resolver<
+    IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateCategoryArgs, "_id" | "input">
+  >;
+  updateTransactionGroup?: Resolver<
+    IResolversTypes["TransactionGroup"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateTransactionGroupArgs, "_id" | "input">
+  >;
+}>;
+
+export interface INegativeFloatScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NegativeFloat"], any> {
+  name: "NegativeFloat";
+}
+
+export interface INegativeIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NegativeInt"], any> {
+  name: "NegativeInt";
+}
+
+export interface INonEmptyStringScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NonEmptyString"], any> {
+  name: "NonEmptyString";
+}
+
+export interface INonNegativeFloatScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NonNegativeFloat"], any> {
+  name: "NonNegativeFloat";
+}
+
+export interface INonNegativeIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NonNegativeInt"], any> {
+  name: "NonNegativeInt";
+}
+
+export interface INonPositiveFloatScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NonPositiveFloat"], any> {
+  name: "NonPositiveFloat";
+}
+
+export interface INonPositiveIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["NonPositiveInt"], any> {
+  name: "NonPositiveInt";
+}
+
+export interface IObjectIdScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["ObjectID"], any> {
+  name: "ObjectID";
+}
+
+export type IObjectKeyValueResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["ObjectKeyValue"] = IResolversParentTypes["ObjectKeyValue"],
+> = ResolversObject<{
+  key?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  value?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type IPageInfoResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["PageInfo"] = IResolversParentTypes["PageInfo"],
+> = ResolversObject<{
+  cursor?: Resolver<Maybe<IResolversTypes["Cursor"]>, ParentType, ContextType>;
+  hasNextPage?: Resolver<IResolversTypes["Boolean"], ParentType, ContextType>;
+  totalCount?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface IPhoneNumberScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["PhoneNumber"], any> {
+  name: "PhoneNumber";
+}
+
+export interface IPortScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Port"], any> {
+  name: "Port";
+}
+
+export interface IPositiveFloatScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["PositiveFloat"], any> {
+  name: "PositiveFloat";
+}
+
+export interface IPositiveIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["PositiveInt"], any> {
+  name: "PositiveInt";
+}
+
+export interface IPostalCodeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["PostalCode"], any> {
+  name: "PostalCode";
+}
+
+export type IQueryResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["Query"] = IResolversParentTypes["Query"],
+> = ResolversObject<{
+  categoriesByGroupId?: Resolver<
+    Array<IResolversTypes["TransactionCategory"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryCategoriesByGroupIdArgs, "transactionGroupId">
+  >;
+  categoryById?: Resolver<
+    Maybe<IResolversTypes["TransactionCategory"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryCategoryByIdArgs, "categoryId">
+  >;
+  now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
+  transactionGroupById?: Resolver<
+    Maybe<IResolversTypes["TransactionGroup"]>,
+    ParentType,
+    ContextType,
+    Partial<IQueryTransactionGroupByIdArgs>
+  >;
+  viewer?: Resolver<Maybe<IResolversTypes["Viewer"]>, ParentType, ContextType>;
+}>;
+
+export interface IRgbScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["RGB"], any> {
+  name: "RGB";
+}
+
+export interface IRgbaScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["RGBA"], any> {
+  name: "RGBA";
+}
+
+export interface IRoutingNumberScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["RoutingNumber"], any> {
+  name: "RoutingNumber";
+}
+
+export interface ISafeIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["SafeInt"], any> {
+  name: "SafeInt";
+}
+
+export interface ITimeScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Time"], any> {
+  name: "Time";
+}
+
+export interface ITimeZoneScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["TimeZone"], any> {
+  name: "TimeZone";
+}
+
+export interface ITimestampScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Timestamp"], any> {
+  name: "Timestamp";
+}
+
+export type ITransactionCategoryResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionCategory"] = IResolversParentTypes["TransactionCategory"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  description?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  iconProperties?: Resolver<
+    IResolversTypes["IconProperties"],
+    ParentType,
+    ContextType
+  >;
+  isDefault?: Resolver<IResolversTypes["Boolean"], ParentType, ContextType>;
+  type?: Resolver<
+    IResolversTypes["TransactionCategoryTypeEnum"],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionGroupResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionGroup"] = IResolversParentTypes["TransactionGroup"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  description?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  iconProperties?: Resolver<
+    IResolversTypes["IconProperties"],
+    ParentType,
+    ContextType
+  >;
+  owner?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface IUrlScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["URL"], any> {
+  name: "URL";
+}
+
+export interface IUsCurrencyScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["USCurrency"], any> {
+  name: "USCurrency";
+}
+
+export interface IUuidScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["UUID"], any> {
+  name: "UUID";
+}
+
+export interface IUnsignedFloatScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["UnsignedFloat"], any> {
+  name: "UnsignedFloat";
+}
+
+export interface IUnsignedIntScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["UnsignedInt"], any> {
+  name: "UnsignedInt";
+}
+
+export interface IUtcOffsetScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["UtcOffset"], any> {
+  name: "UtcOffset";
+}
+
+export type IViewerResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["Viewer"] = IResolversParentTypes["Viewer"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  email?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  isAdmin?: Resolver<IResolversTypes["Boolean"], ParentType, ContextType>;
+  name?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface IVoidScalarConfig
+  extends GraphQLScalarTypeConfig<IResolversTypes["Void"], any> {
+  name: "Void";
+}
+
+export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
+  AccountNumber?: GraphQLScalarType;
+  AuthenticatedUser?: IAuthenticatedUserResolvers<ContextType>;
+  BigInt?: GraphQLScalarType;
+  Byte?: GraphQLScalarType;
+  CountryCode?: GraphQLScalarType;
+  Currency?: GraphQLScalarType;
+  Cursor?: GraphQLScalarType;
+  DID?: GraphQLScalarType;
+  Date?: GraphQLScalarType;
+  DateTime?: GraphQLScalarType;
+  Duration?: GraphQLScalarType;
+  EmailAddress?: GraphQLScalarType;
+  GUID?: GraphQLScalarType;
+  HSL?: GraphQLScalarType;
+  HSLA?: GraphQLScalarType;
+  HexColorCode?: GraphQLScalarType;
+  Hexadecimal?: GraphQLScalarType;
+  IBAN?: GraphQLScalarType;
+  IPv4?: GraphQLScalarType;
+  IPv6?: GraphQLScalarType;
+  ISBN?: GraphQLScalarType;
+  ISO8601Duration?: GraphQLScalarType;
+  IconProperties?: IIconPropertiesResolvers<ContextType>;
+  JSON?: GraphQLScalarType;
+  JSONObject?: GraphQLScalarType;
+  JWT?: GraphQLScalarType;
+  Latitude?: GraphQLScalarType;
+  LocalDate?: GraphQLScalarType;
+  LocalEndTime?: GraphQLScalarType;
+  LocalTime?: GraphQLScalarType;
+  Locale?: GraphQLScalarType;
+  Long?: GraphQLScalarType;
+  Longitude?: GraphQLScalarType;
+  MAC?: GraphQLScalarType;
+  Mutation?: IMutationResolvers<ContextType>;
+  NegativeFloat?: GraphQLScalarType;
+  NegativeInt?: GraphQLScalarType;
+  NonEmptyString?: GraphQLScalarType;
+  NonNegativeFloat?: GraphQLScalarType;
+  NonNegativeInt?: GraphQLScalarType;
+  NonPositiveFloat?: GraphQLScalarType;
+  NonPositiveInt?: GraphQLScalarType;
+  ObjectID?: GraphQLScalarType;
+  ObjectKeyValue?: IObjectKeyValueResolvers<ContextType>;
+  PageInfo?: IPageInfoResolvers<ContextType>;
+  PhoneNumber?: GraphQLScalarType;
+  Port?: GraphQLScalarType;
+  PositiveFloat?: GraphQLScalarType;
+  PositiveInt?: GraphQLScalarType;
+  PostalCode?: GraphQLScalarType;
+  Query?: IQueryResolvers<ContextType>;
+  RGB?: GraphQLScalarType;
+  RGBA?: GraphQLScalarType;
+  RoutingNumber?: GraphQLScalarType;
+  SafeInt?: GraphQLScalarType;
+  Time?: GraphQLScalarType;
+  TimeZone?: GraphQLScalarType;
+  Timestamp?: GraphQLScalarType;
+  TransactionCategory?: ITransactionCategoryResolvers<ContextType>;
+  TransactionGroup?: ITransactionGroupResolvers<ContextType>;
+  URL?: GraphQLScalarType;
+  USCurrency?: GraphQLScalarType;
+  UUID?: GraphQLScalarType;
+  UnsignedFloat?: GraphQLScalarType;
+  UnsignedInt?: GraphQLScalarType;
+  UtcOffset?: GraphQLScalarType;
+  Viewer?: IViewerResolvers<ContextType>;
+  Void?: GraphQLScalarType;
+}>;
+
+export type IDirectiveResolvers<ContextType = TGraphQLContext> =
+  ResolversObject<{
+    cacheControl?: ICacheControlDirectiveResolver<any, any, ContextType>;
+  }>;
+>>>>>>> Stashed changes

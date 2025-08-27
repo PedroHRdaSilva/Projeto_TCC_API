@@ -1,4 +1,8 @@
-directive @cacheControl(inheritMaxAge: Boolean, maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | INTERFACE | OBJECT | UNION
+directive @cacheControl(
+  inheritMaxAge: Boolean
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | INTERFACE | OBJECT | UNION
 
 scalar AccountNumber
 
@@ -121,8 +125,14 @@ type Mutation {
   loginWithCredentials(email: String!, password: String!): Boolean!
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
-  updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
-  updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
+  updateCategory(
+    _id: ObjectID!
+    input: UpdateCustomInput!
+  ): TransactionCategory!
+  updateTransactionGroup(
+    _id: ObjectID!
+    input: UpdateTransactionGroupInput!
+  ): TransactionGroup!
 }
 
 scalar NegativeFloat

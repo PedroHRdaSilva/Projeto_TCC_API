@@ -1,5 +1,5 @@
-import { UserNotFoundError } from "../../../infra/GraphQLErrors";
-import { Collections } from "../../../infra/types/Collections";
+import { UserNotFoundError } from "~/infra/GraphQLErrors";
+import { Collections } from "~/infra/types/Collections";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 

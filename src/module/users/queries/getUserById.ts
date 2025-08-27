@@ -1,5 +1,5 @@
 import type { ObjectId } from "mongodb";
-import { Collections } from "../../../infra/types/Collections";
+import { Collections } from "~/infra/types/Collections";
 
 export default async function getUserById(
   collections: Collections,

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 overwrite: true
 watch: false
 
@@ -26,3 +27,33 @@ generates:
     plugins:
       - "typescript"
       - "typescript-resolvers"
+=======
+overwrite: true
+watch: false
+
+schema:
+  "./src/**/*.ts":
+    noRequire: true
+    documents: null
+
+generates:
+  src/graphql/schema/schema.graphql:
+    plugins:
+      - schema-ast
+
+  src/graphql/types/graphql.ts:
+    config:
+      typesPrefix: I
+      useIndexSignature: true
+      defaultMapper: Partial<{T}>
+      contextType: ./GraphqlContext#TGraphQLContext
+      scalars:
+        Cursor: ../../utils/Cursor#default
+        ObjectID: mongodb#ObjectId
+      showUnusedMappers: true
+      mappers:
+        TransactionCategory: ./module/transaction/models/TransactionCategory#TransactionCategory
+    plugins:
+      - "typescript"
+      - "typescript-resolvers"
+>>>>>>> Stashed changes
