@@ -6,6 +6,8 @@ import {
   TransactionCategory,
   TransactionCategoryCustom,
 } from "../module/transaction/models/TransactionCategory";
+import { Transaction } from "~/module/transaction/models/Transaction";
+import { CreditCard } from "~/module/transaction/models/CreditCard";
 
 export default function useMongoCollections(
   mongoClient: MongoClient
@@ -15,6 +17,7 @@ export default function useMongoCollections(
   return {
     users: db.collection<User>("users"),
     transactions: {
+      detail: db.collection<Transaction>("transaction.detail"),
       group: db.collection<TransactionGroup>("transactions.group"),
       categories: {
         defaults: db.collection<TransactionCategory>(
@@ -25,5 +28,6 @@ export default function useMongoCollections(
         ),
       },
     },
+    creditCard: db.collection<CreditCard>("creditCard"),
   };
 }

@@ -1,3 +1,4 @@
+import CreditCardModule from "~/module/transaction/CreditCardModule";
 import AppModule from "./AppModule";
 import ScalarsModule from "./ScalarsModule";
 import TransactionCategoryModule from "./transaction/TransactionCategoryModule";
@@ -13,4 +14,5 @@ export default [
   TransactionModule,
   TransactionCategoryModule,
   TransactionModule,
+  CreditCardModule,
 ];

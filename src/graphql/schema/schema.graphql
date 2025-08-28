@@ -43,6 +43,17 @@ input CreateUserInput {
   password: String!
 }
 
+type CreditCard {
+  _id: ObjectID!
+  description: String!
+  transactionGroupId: ObjectID!
+}
+
+input CreditCardInput {
+  description: String!
+  transactionGroupId: ObjectID!
+}
+
 scalar Currency
 
 scalar Cursor
@@ -118,10 +129,12 @@ scalar MAC
 
 type Mutation {
   createCategory(input: CreateCategoryCustomInput!): TransactionCategory!
+  createCreditCard(input: CreditCardInput!): CreditCard!
   createTransaction(input: TransactionInput!): [Transaction!]!
   createTransactionGroup(input: CreateTransactionGroupInput!): TransactionGroup!
   createUser(input: CreateUserInput!): Boolean!
   deleteCategory(_id: ObjectID!, groupId: ObjectID!): Boolean
+  deleteCreditCard(_id: ObjectID!): Boolean
   deleteTransaction(_id: ObjectID!): Boolean!
   deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean!
@@ -129,6 +142,7 @@ type Mutation {
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
   updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
+  updateCreditCard(_id: ObjectID!, input: CreditCardInput!): CreditCard!
   updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
   updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
 }
@@ -178,6 +192,8 @@ scalar PostalCode
 type Query {
   categoriesByGroupId(transactionGroupId: ObjectID!): [TransactionCategory!]!
   categoryById(categoryId: ObjectID!): TransactionCategory
+  creditCardByGroupId(transactionGroupId: ObjectID!): [CreditCard!]!
+  creditCardById(_id: ObjectID!): CreditCard
   now: BigInt
   transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
@@ -192,6 +208,10 @@ scalar RoutingNumber
 
 scalar SafeInt
 
+type StandardTransaction {
+  creditCard: CreditCard
+}
+
 scalar Time
 
 scalar TimeZone
@@ -202,6 +222,7 @@ type Transaction {
   _id: ObjectID!
   amount: Float!
   category: TransactionCategory!
+  creditCard: CreditCard
   date: Date!
   description: String!
   installments: Installments
