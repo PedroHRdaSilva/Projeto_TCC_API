@@ -3,7 +3,7 @@
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "tsx": false,
+      "tsx": true,
       "decorators": true,
       "dynamicImport": true
     },
@@ -11,11 +11,16 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "target": "es2022",
-    "keepClassNames": true
+    "target": "es2020",
+    "keepClassNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    }
   },
   "module": {
-    "type": "commonjs",
+    "type": "es6",
+    "resolveFully": true,
     "noInterop": false
   },
   "sourceMaps": true,

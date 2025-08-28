@@ -1,10 +1,13 @@
 import type { ObjectId } from "mongodb";
 import { Collections } from "../../../infra/types/Collections";
+import { NotFoundError } from "~/infra/GraphQLErrors";
 
 export default async function getCategoryById(
   collections: Collections,
   categoryId: ObjectId | undefined
 ) {
+  if (!categoryId) throw new NotFoundError();
+
   const [defaultCategory, customCategory] = await Promise.all([
     collections.transactions.categories.defaults.findOne({
       _id: categoryId,
@@ -23,5 +26,12 @@ export default async function getCategoryById(
     };
   }
 
-  return { ...customCategory, isDefault: false };
+  if (customCategory) {
+    return {
+      ...customCategory,
+      isDefault: false,
+    };
+  }
+
+  throw new NotFoundError();
 }

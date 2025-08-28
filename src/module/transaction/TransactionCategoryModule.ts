@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import { GraphQLModule } from "../../graphql/module";
-import { ForbiddenError, NotFoundError } from "../../infra/GraphQLErrors";
+import { ForbiddenError } from "../../infra/GraphQLErrors";
 import createCategory from "./commands/createCategory";
 import updateCategory from "./commands/updateCategory";
 import deleteCategory from "./commands/deleteCategory";
@@ -61,11 +61,6 @@ const TransactionCategoryModule: GraphQLModule = {
     }
   `,
   resolvers: {
-    TransactionCategory: {
-      isDefault: (_source) => {
-        return _source.categoryDefaultId ? false : true;
-      },
-    },
     Query: {
       categoryById: async (_source, args, ctx) => {
         if (!ctx.viewer) throw new ForbiddenError();

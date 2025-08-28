@@ -2,7 +2,7 @@
 import WinstonLimit from "@redpill-paris/winston-limit-transport";
 import type { LoggerOptions } from "winston";
 import winston from "winston";
-import { formatUppercaseLevel } from "./formatters";
+import { formatUppercaseLevel } from "~/infra/logging/formatters";
 
 const loggerOptions = {
   levels: winston.config.npm.levels,

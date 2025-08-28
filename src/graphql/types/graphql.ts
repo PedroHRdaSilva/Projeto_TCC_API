@@ -5,7 +5,8 @@ import {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from "graphql";
-import { TransactionCategory } from "./module/transaction/models/TransactionCategory";
+import { TransactionCategory } from "../../module/transaction/models/TransactionCategory";
+import { Transaction } from "../../module/transaction/models/Transaction";
 import { TGraphQLContext } from "./GraphqlContext";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -147,23 +148,36 @@ export type IIconPropertiesInput = {
   icon: Scalars["String"]["input"];
 };
 
+export type IInstallments = {
+  __typename?: "Installments";
+  current: Scalars["Int"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
 export type IMutation = {
   __typename?: "Mutation";
   createCategory: ITransactionCategory;
+  createTransaction: Array<ITransaction>;
   createTransactionGroup: ITransactionGroup;
   createUser: Scalars["Boolean"]["output"];
   deleteCategory?: Maybe<Scalars["Boolean"]["output"]>;
+  deleteTransaction: Scalars["Boolean"]["output"];
   deleteTransactionGroup: Scalars["Boolean"]["output"];
   forgotPassword: Scalars["Boolean"]["output"];
   loginWithCredentials: Scalars["Boolean"]["output"];
   now?: Maybe<Scalars["BigInt"]["output"]>;
   resetPassword: Scalars["Boolean"]["output"];
   updateCategory: ITransactionCategory;
+  updateTransaction?: Maybe<ITransaction>;
   updateTransactionGroup: ITransactionGroup;
 };
 
 export type IMutationCreateCategoryArgs = {
   input: ICreateCategoryCustomInput;
+};
+
+export type IMutationCreateTransactionArgs = {
+  input: ITransactionInput;
 };
 
 export type IMutationCreateTransactionGroupArgs = {
@@ -177,6 +191,10 @@ export type IMutationCreateUserArgs = {
 export type IMutationDeleteCategoryArgs = {
   _id: Scalars["ObjectID"]["input"];
   groupId: Scalars["ObjectID"]["input"];
+};
+
+export type IMutationDeleteTransactionArgs = {
+  _id: Scalars["ObjectID"]["input"];
 };
 
 export type IMutationDeleteTransactionGroupArgs = {
@@ -200,6 +218,11 @@ export type IMutationResetPasswordArgs = {
 export type IMutationUpdateCategoryArgs = {
   _id: Scalars["ObjectID"]["input"];
   input: IUpdateCustomInput;
+};
+
+export type IMutationUpdateTransactionArgs = {
+  _id: Scalars["ObjectID"]["input"];
+  input: ITransactionInput;
 };
 
 export type IMutationUpdateTransactionGroupArgs = {
@@ -230,6 +253,7 @@ export type IQuery = {
   categoriesByGroupId: Array<ITransactionCategory>;
   categoryById?: Maybe<ITransactionCategory>;
   now?: Maybe<Scalars["BigInt"]["output"]>;
+  transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
   viewer?: Maybe<IViewer>;
 };
@@ -242,8 +266,23 @@ export type IQueryCategoryByIdArgs = {
   categoryId: Scalars["ObjectID"]["input"];
 };
 
+export type IQueryTransactionByIdArgs = {
+  _id: Scalars["ObjectID"]["input"];
+};
+
 export type IQueryTransactionGroupByIdArgs = {
   _id?: InputMaybe<Scalars["ObjectID"]["input"]>;
+};
+
+export type ITransaction = {
+  __typename?: "Transaction";
+  _id: Scalars["ObjectID"]["output"];
+  amount: Scalars["Float"]["output"];
+  category: ITransactionCategory;
+  date: Scalars["Date"]["output"];
+  description: Scalars["String"]["output"];
+  installments?: Maybe<IInstallments>;
+  transactionGroupId: Scalars["ObjectID"]["output"];
 };
 
 export type ITransactionCategory = {
@@ -266,6 +305,17 @@ export type ITransactionGroup = {
   description: Scalars["String"]["output"];
   iconProperties: IIconProperties;
   owner: Scalars["ObjectID"]["output"];
+};
+
+export type ITransactionInput = {
+  amount: Scalars["Float"]["input"];
+  categoryId: Scalars["ObjectID"]["input"];
+  creditCardId?: InputMaybe<Scalars["ObjectID"]["input"]>;
+  date: Scalars["Date"]["input"];
+  description: Scalars["String"]["input"];
+  installmentCount?: InputMaybe<Scalars["Int"]["input"]>;
+  isRecurringPayment: Scalars["Boolean"]["input"];
+  transactionGroupId: Scalars["ObjectID"]["input"];
 };
 
 export type IUpdateCustomInput = {
@@ -425,6 +475,7 @@ export type IResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Partial<Scalars["DateTime"]["output"]>>;
   Duration: ResolverTypeWrapper<Partial<Scalars["Duration"]["output"]>>;
   EmailAddress: ResolverTypeWrapper<Partial<Scalars["EmailAddress"]["output"]>>;
+  Float: ResolverTypeWrapper<Partial<Scalars["Float"]["output"]>>;
   GUID: ResolverTypeWrapper<Partial<Scalars["GUID"]["output"]>>;
   HSL: ResolverTypeWrapper<Partial<Scalars["HSL"]["output"]>>;
   HSLA: ResolverTypeWrapper<Partial<Scalars["HSLA"]["output"]>>;
@@ -439,6 +490,7 @@ export type IResolversTypes = ResolversObject<{
   >;
   IconProperties: ResolverTypeWrapper<Partial<IIconProperties>>;
   IconPropertiesInput: ResolverTypeWrapper<Partial<IIconPropertiesInput>>;
+  Installments: ResolverTypeWrapper<Partial<IInstallments>>;
   Int: ResolverTypeWrapper<Partial<Scalars["Int"]["output"]>>;
   JSON: ResolverTypeWrapper<Partial<Scalars["JSON"]["output"]>>;
   JSONObject: ResolverTypeWrapper<Partial<Scalars["JSONObject"]["output"]>>;
@@ -493,11 +545,13 @@ export type IResolversTypes = ResolversObject<{
   Time: ResolverTypeWrapper<Partial<Scalars["Time"]["output"]>>;
   TimeZone: ResolverTypeWrapper<Partial<Scalars["TimeZone"]["output"]>>;
   Timestamp: ResolverTypeWrapper<Partial<Scalars["Timestamp"]["output"]>>;
+  Transaction: ResolverTypeWrapper<Transaction>;
   TransactionCategory: ResolverTypeWrapper<TransactionCategory>;
   TransactionCategoryTypeEnum: ResolverTypeWrapper<
     Partial<ITransactionCategoryTypeEnum>
   >;
   TransactionGroup: ResolverTypeWrapper<Partial<ITransactionGroup>>;
+  TransactionInput: ResolverTypeWrapper<Partial<ITransactionInput>>;
   URL: ResolverTypeWrapper<Partial<Scalars["URL"]["output"]>>;
   USCurrency: ResolverTypeWrapper<Partial<Scalars["USCurrency"]["output"]>>;
   UUID: ResolverTypeWrapper<Partial<Scalars["UUID"]["output"]>>;
@@ -533,6 +587,7 @@ export type IResolversParentTypes = ResolversObject<{
   DateTime: Partial<Scalars["DateTime"]["output"]>;
   Duration: Partial<Scalars["Duration"]["output"]>;
   EmailAddress: Partial<Scalars["EmailAddress"]["output"]>;
+  Float: Partial<Scalars["Float"]["output"]>;
   GUID: Partial<Scalars["GUID"]["output"]>;
   HSL: Partial<Scalars["HSL"]["output"]>;
   HSLA: Partial<Scalars["HSLA"]["output"]>;
@@ -545,6 +600,7 @@ export type IResolversParentTypes = ResolversObject<{
   ISO8601Duration: Partial<Scalars["ISO8601Duration"]["output"]>;
   IconProperties: Partial<IIconProperties>;
   IconPropertiesInput: Partial<IIconPropertiesInput>;
+  Installments: Partial<IInstallments>;
   Int: Partial<Scalars["Int"]["output"]>;
   JSON: Partial<Scalars["JSON"]["output"]>;
   JSONObject: Partial<Scalars["JSONObject"]["output"]>;
@@ -583,8 +639,10 @@ export type IResolversParentTypes = ResolversObject<{
   Time: Partial<Scalars["Time"]["output"]>;
   TimeZone: Partial<Scalars["TimeZone"]["output"]>;
   Timestamp: Partial<Scalars["Timestamp"]["output"]>;
+  Transaction: Transaction;
   TransactionCategory: TransactionCategory;
   TransactionGroup: Partial<ITransactionGroup>;
+  TransactionInput: Partial<ITransactionInput>;
   URL: Partial<Scalars["URL"]["output"]>;
   USCurrency: Partial<Scalars["USCurrency"]["output"]>;
   UUID: Partial<Scalars["UUID"]["output"]>;
@@ -736,6 +794,16 @@ export type IIconPropertiesResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type IInstallmentsResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["Installments"] = IResolversParentTypes["Installments"],
+> = ResolversObject<{
+  current?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
+  total?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export interface IJsonScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["JSON"], any> {
   name: "JSON";
@@ -802,6 +870,12 @@ export type IMutationResolvers<
     ContextType,
     RequireFields<IMutationCreateCategoryArgs, "input">
   >;
+  createTransaction?: Resolver<
+    Array<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IMutationCreateTransactionArgs, "input">
+  >;
   createTransactionGroup?: Resolver<
     IResolversTypes["TransactionGroup"],
     ParentType,
@@ -819,6 +893,12 @@ export type IMutationResolvers<
     ParentType,
     ContextType,
     RequireFields<IMutationDeleteCategoryArgs, "_id" | "groupId">
+  >;
+  deleteTransaction?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationDeleteTransactionArgs, "_id">
   >;
   deleteTransactionGroup?: Resolver<
     IResolversTypes["Boolean"],
@@ -850,6 +930,12 @@ export type IMutationResolvers<
     ParentType,
     ContextType,
     RequireFields<IMutationUpdateCategoryArgs, "_id" | "input">
+  >;
+  updateTransaction?: Resolver<
+    Maybe<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateTransactionArgs, "_id" | "input">
   >;
   updateTransactionGroup?: Resolver<
     IResolversTypes["TransactionGroup"],
@@ -963,6 +1049,12 @@ export type IQueryResolvers<
     RequireFields<IQueryCategoryByIdArgs, "categoryId">
   >;
   now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
+  transactionById?: Resolver<
+    Maybe<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryTransactionByIdArgs, "_id">
+  >;
   transactionGroupById?: Resolver<
     Maybe<IResolversTypes["TransactionGroup"]>,
     ParentType,
@@ -1006,6 +1098,33 @@ export interface ITimestampScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["Timestamp"], any> {
   name: "Timestamp";
 }
+
+export type ITransactionResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["Transaction"] = IResolversParentTypes["Transaction"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  amount?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  category?: Resolver<
+    IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType
+  >;
+  date?: Resolver<IResolversTypes["Date"], ParentType, ContextType>;
+  description?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  installments?: Resolver<
+    Maybe<IResolversTypes["Installments"]>,
+    ParentType,
+    ContextType
+  >;
+  transactionGroupId?: Resolver<
+    IResolversTypes["ObjectID"],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export type ITransactionCategoryResolvers<
   ContextType = TGraphQLContext,
@@ -1115,6 +1234,7 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   ISBN?: GraphQLScalarType;
   ISO8601Duration?: GraphQLScalarType;
   IconProperties?: IIconPropertiesResolvers<ContextType>;
+  Installments?: IInstallmentsResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
   JWT?: GraphQLScalarType;
@@ -1150,6 +1270,7 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
+  Transaction?: ITransactionResolvers<ContextType>;
   TransactionCategory?: ITransactionCategoryResolvers<ContextType>;
   TransactionGroup?: ITransactionGroupResolvers<ContextType>;
   URL?: GraphQLScalarType;

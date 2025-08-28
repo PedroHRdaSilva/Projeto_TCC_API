@@ -1,11 +1,11 @@
 import gql from "graphql-tag";
-import { GraphQLModule } from "../../graphql/module";
-import { ForbiddenError } from "../../infra/GraphQLErrors";
+import { GraphQLModule } from "~/graphql/module";
+import { ForbiddenError } from "~/infra/GraphQLErrors";
 
-import createTransactionGroup from "./commands/createTransactionGroup";
-import updateTransactionGroup from "./commands/updateTransactionGroup";
-import deleteTransactionGroup from "./commands/deleteTransactionGroup";
-import getTransactionGroupById from "./queires/getTransactionGroupById";
+import createTransactionGroup from "~/module/transaction/commands/createTransactionGroup";
+import updateTransactionGroup from "~/module/transaction/commands/updateTransactionGroup";
+import deleteTransactionGroup from "~/module/transaction/commands/deleteTransactionGroup";
+import getTransactionGroupById from "~/module/transaction/queires/getTransactionGroupById";
 
 const TransactionGroupModule: GraphQLModule = {
   typeDefs: gql`

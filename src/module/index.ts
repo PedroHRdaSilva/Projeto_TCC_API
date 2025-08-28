@@ -12,4 +12,5 @@ export default [
   UserModule,
   TransactionModule,
   TransactionCategoryModule,
+  TransactionModule,
 ];

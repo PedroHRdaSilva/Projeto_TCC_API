@@ -22,7 +22,8 @@ generates:
         ObjectID: mongodb#ObjectId
       showUnusedMappers: true
       mappers:
-        TransactionCategory: ./module/transaction/models/TransactionCategory#TransactionCategory
+        TransactionCategory: ../../module/transaction/models/TransactionCategory#TransactionCategory
+        Transaction: ../../module/transaction/models/Transaction#Transaction
     plugins:
       - "typescript"
       - "typescript-resolvers"

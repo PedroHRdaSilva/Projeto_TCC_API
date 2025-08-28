@@ -1,9 +1,9 @@
-import { ConflictError } from "../../../infra/GraphQLErrors";
-import { Collections } from "../../../infra/types/Collections";
+import { ConflictError } from "~/infra/GraphQLErrors";
+import { Collections } from "~/infra/types/Collections";
 import bcrypt from "bcryptjs";
-import { User } from "../models/User";
+import { User } from "~/module/users/models/User";
 import { ObjectId } from "mongodb";
-import { ICreateUserInput } from "../../../graphql/types/graphql";
+import { ICreateUserInput } from "~/graphql/types/graphql";
 
 export default async function createUser(
   collections: Collections,

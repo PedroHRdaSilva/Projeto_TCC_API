@@ -89,6 +89,11 @@ input IconPropertiesInput {
   icon: String!
 }
 
+type Installments {
+  current: Int!
+  total: Int!
+}
+
 scalar JSON
 
 scalar JSONObject
@@ -113,15 +118,18 @@ scalar MAC
 
 type Mutation {
   createCategory(input: CreateCategoryCustomInput!): TransactionCategory!
+  createTransaction(input: TransactionInput!): [Transaction!]!
   createTransactionGroup(input: CreateTransactionGroupInput!): TransactionGroup!
   createUser(input: CreateUserInput!): Boolean!
   deleteCategory(_id: ObjectID!, groupId: ObjectID!): Boolean
+  deleteTransaction(_id: ObjectID!): Boolean!
   deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean!
   loginWithCredentials(email: String!, password: String!): Boolean!
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
   updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
+  updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
   updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
 }
 
@@ -171,6 +179,7 @@ type Query {
   categoriesByGroupId(transactionGroupId: ObjectID!): [TransactionCategory!]!
   categoryById(categoryId: ObjectID!): TransactionCategory
   now: BigInt
+  transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
   viewer: Viewer
 }
@@ -188,6 +197,16 @@ scalar Time
 scalar TimeZone
 
 scalar Timestamp
+
+type Transaction {
+  _id: ObjectID!
+  amount: Float!
+  category: TransactionCategory!
+  date: Date!
+  description: String!
+  installments: Installments
+  transactionGroupId: ObjectID!
+}
 
 type TransactionCategory {
   _id: ObjectID!
@@ -207,6 +226,17 @@ type TransactionGroup {
   description: String!
   iconProperties: IconProperties!
   owner: ObjectID!
+}
+
+input TransactionInput {
+  amount: Float!
+  categoryId: ObjectID!
+  creditCardId: ObjectID
+  date: Date!
+  description: String!
+  installmentCount: Int
+  isRecurringPayment: Boolean!
+  transactionGroupId: ObjectID!
 }
 
 scalar URL

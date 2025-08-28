@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { GraphQLModule } from "../graphql/module";
+import { GraphQLModule } from "~/graphql/module";
 
 const TypesModule: GraphQLModule = {
   typeDefs: gql`

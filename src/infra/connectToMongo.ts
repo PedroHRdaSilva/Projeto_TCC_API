@@ -1,7 +1,7 @@
 // FUTURE REFACTOR
 import { MongoClient } from "mongodb";
 import { URL } from "url";
-import logger from "./logging/logger";
+import logger from "~/infra/logging/logger";
 
 export default async function connectToMongo(): Promise<MongoClient> {
   if (!process.env.MONGODB_URI) {
