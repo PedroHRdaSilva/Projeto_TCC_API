@@ -6,6 +6,7 @@ import type {
   TransactionCategoryCustom,
 } from "../../module/transaction/models/TransactionCategory";
 import { Transaction } from "~/module/transaction/models/Transaction";
+import { CreditCard } from "~/module/transaction/models/CreditCard";
 
 export type Collections = {
   users: Collection<User>;
@@ -17,4 +18,5 @@ export type Collections = {
       custom: Collection<TransactionCategoryCustom>;
     };
   };
+  creditCard: Collection<CreditCard>;
 };

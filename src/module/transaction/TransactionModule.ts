@@ -20,6 +20,7 @@ const TransactionModule: GraphQLModule = {
       description: String!
       amount: Float!
       installments: Installments
+      creditCard: CreditCard
     }
 
     extend type Query {

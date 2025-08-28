@@ -135,6 +135,18 @@ export type ICreateUserInput = {
   password: Scalars["String"]["input"];
 };
 
+export type ICreditCard = {
+  __typename?: "CreditCard";
+  _id: Scalars["ObjectID"]["output"];
+  description: Scalars["String"]["output"];
+  transactionGroupId: Scalars["ObjectID"]["output"];
+};
+
+export type ICreditCardInput = {
+  description: Scalars["String"]["input"];
+  transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
 export type IIconProperties = {
   __typename?: "IconProperties";
   background: Scalars["String"]["output"];
@@ -157,10 +169,12 @@ export type IInstallments = {
 export type IMutation = {
   __typename?: "Mutation";
   createCategory: ITransactionCategory;
+  createCreditCard: ICreditCard;
   createTransaction: Array<ITransaction>;
   createTransactionGroup: ITransactionGroup;
   createUser: Scalars["Boolean"]["output"];
   deleteCategory?: Maybe<Scalars["Boolean"]["output"]>;
+  deleteCreditCard?: Maybe<Scalars["Boolean"]["output"]>;
   deleteTransaction: Scalars["Boolean"]["output"];
   deleteTransactionGroup: Scalars["Boolean"]["output"];
   forgotPassword: Scalars["Boolean"]["output"];
@@ -168,12 +182,17 @@ export type IMutation = {
   now?: Maybe<Scalars["BigInt"]["output"]>;
   resetPassword: Scalars["Boolean"]["output"];
   updateCategory: ITransactionCategory;
+  updateCreditCard: ICreditCard;
   updateTransaction?: Maybe<ITransaction>;
   updateTransactionGroup: ITransactionGroup;
 };
 
 export type IMutationCreateCategoryArgs = {
   input: ICreateCategoryCustomInput;
+};
+
+export type IMutationCreateCreditCardArgs = {
+  input: ICreditCardInput;
 };
 
 export type IMutationCreateTransactionArgs = {
@@ -191,6 +210,10 @@ export type IMutationCreateUserArgs = {
 export type IMutationDeleteCategoryArgs = {
   _id: Scalars["ObjectID"]["input"];
   groupId: Scalars["ObjectID"]["input"];
+};
+
+export type IMutationDeleteCreditCardArgs = {
+  _id: Scalars["ObjectID"]["input"];
 };
 
 export type IMutationDeleteTransactionArgs = {
@@ -218,6 +241,11 @@ export type IMutationResetPasswordArgs = {
 export type IMutationUpdateCategoryArgs = {
   _id: Scalars["ObjectID"]["input"];
   input: IUpdateCustomInput;
+};
+
+export type IMutationUpdateCreditCardArgs = {
+  _id: Scalars["ObjectID"]["input"];
+  input: ICreditCardInput;
 };
 
 export type IMutationUpdateTransactionArgs = {
@@ -252,6 +280,8 @@ export type IQuery = {
   __typename?: "Query";
   categoriesByGroupId: Array<ITransactionCategory>;
   categoryById?: Maybe<ITransactionCategory>;
+  creditCardByGroupId: Array<ICreditCard>;
+  creditCardById?: Maybe<ICreditCard>;
   now?: Maybe<Scalars["BigInt"]["output"]>;
   transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
@@ -266,6 +296,14 @@ export type IQueryCategoryByIdArgs = {
   categoryId: Scalars["ObjectID"]["input"];
 };
 
+export type IQueryCreditCardByGroupIdArgs = {
+  transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
+export type IQueryCreditCardByIdArgs = {
+  _id: Scalars["ObjectID"]["input"];
+};
+
 export type IQueryTransactionByIdArgs = {
   _id: Scalars["ObjectID"]["input"];
 };
@@ -274,11 +312,17 @@ export type IQueryTransactionGroupByIdArgs = {
   _id?: InputMaybe<Scalars["ObjectID"]["input"]>;
 };
 
+export type IStandardTransaction = {
+  __typename?: "StandardTransaction";
+  creditCard?: Maybe<ICreditCard>;
+};
+
 export type ITransaction = {
   __typename?: "Transaction";
   _id: Scalars["ObjectID"]["output"];
   amount: Scalars["Float"]["output"];
   category: ITransactionCategory;
+  creditCard?: Maybe<ICreditCard>;
   date: Scalars["Date"]["output"];
   description: Scalars["String"]["output"];
   installments?: Maybe<IInstallments>;
@@ -468,6 +512,8 @@ export type IResolversTypes = ResolversObject<{
     Partial<ICreateTransactionGroupInput>
   >;
   CreateUserInput: ResolverTypeWrapper<Partial<ICreateUserInput>>;
+  CreditCard: ResolverTypeWrapper<Partial<ICreditCard>>;
+  CreditCardInput: ResolverTypeWrapper<Partial<ICreditCardInput>>;
   Currency: ResolverTypeWrapper<Partial<Scalars["Currency"]["output"]>>;
   Cursor: ResolverTypeWrapper<Partial<Scalars["Cursor"]["output"]>>;
   DID: ResolverTypeWrapper<Partial<Scalars["DID"]["output"]>>;
@@ -541,6 +587,7 @@ export type IResolversTypes = ResolversObject<{
     Partial<Scalars["RoutingNumber"]["output"]>
   >;
   SafeInt: ResolverTypeWrapper<Partial<Scalars["SafeInt"]["output"]>>;
+  StandardTransaction: ResolverTypeWrapper<Partial<IStandardTransaction>>;
   String: ResolverTypeWrapper<Partial<Scalars["String"]["output"]>>;
   Time: ResolverTypeWrapper<Partial<Scalars["Time"]["output"]>>;
   TimeZone: ResolverTypeWrapper<Partial<Scalars["TimeZone"]["output"]>>;
@@ -580,6 +627,8 @@ export type IResolversParentTypes = ResolversObject<{
   CreateCategoryDefaultInput: Partial<ICreateCategoryDefaultInput>;
   CreateTransactionGroupInput: Partial<ICreateTransactionGroupInput>;
   CreateUserInput: Partial<ICreateUserInput>;
+  CreditCard: Partial<ICreditCard>;
+  CreditCardInput: Partial<ICreditCardInput>;
   Currency: Partial<Scalars["Currency"]["output"]>;
   Cursor: Partial<Scalars["Cursor"]["output"]>;
   DID: Partial<Scalars["DID"]["output"]>;
@@ -635,6 +684,7 @@ export type IResolversParentTypes = ResolversObject<{
   RGBA: Partial<Scalars["RGBA"]["output"]>;
   RoutingNumber: Partial<Scalars["RoutingNumber"]["output"]>;
   SafeInt: Partial<Scalars["SafeInt"]["output"]>;
+  StandardTransaction: Partial<IStandardTransaction>;
   String: Partial<Scalars["String"]["output"]>;
   Time: Partial<Scalars["Time"]["output"]>;
   TimeZone: Partial<Scalars["TimeZone"]["output"]>;
@@ -697,6 +747,21 @@ export interface ICountryCodeScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["CountryCode"], any> {
   name: "CountryCode";
 }
+
+export type ICreditCardResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["CreditCard"] = IResolversParentTypes["CreditCard"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  description?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  transactionGroupId?: Resolver<
+    IResolversTypes["ObjectID"],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export interface ICurrencyScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["Currency"], any> {
@@ -870,6 +935,12 @@ export type IMutationResolvers<
     ContextType,
     RequireFields<IMutationCreateCategoryArgs, "input">
   >;
+  createCreditCard?: Resolver<
+    IResolversTypes["CreditCard"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationCreateCreditCardArgs, "input">
+  >;
   createTransaction?: Resolver<
     Array<IResolversTypes["Transaction"]>,
     ParentType,
@@ -893,6 +964,12 @@ export type IMutationResolvers<
     ParentType,
     ContextType,
     RequireFields<IMutationDeleteCategoryArgs, "_id" | "groupId">
+  >;
+  deleteCreditCard?: Resolver<
+    Maybe<IResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IMutationDeleteCreditCardArgs, "_id">
   >;
   deleteTransaction?: Resolver<
     IResolversTypes["Boolean"],
@@ -930,6 +1007,12 @@ export type IMutationResolvers<
     ParentType,
     ContextType,
     RequireFields<IMutationUpdateCategoryArgs, "_id" | "input">
+  >;
+  updateCreditCard?: Resolver<
+    IResolversTypes["CreditCard"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateCreditCardArgs, "_id" | "input">
   >;
   updateTransaction?: Resolver<
     Maybe<IResolversTypes["Transaction"]>,
@@ -1048,6 +1131,18 @@ export type IQueryResolvers<
     ContextType,
     RequireFields<IQueryCategoryByIdArgs, "categoryId">
   >;
+  creditCardByGroupId?: Resolver<
+    Array<IResolversTypes["CreditCard"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryCreditCardByGroupIdArgs, "transactionGroupId">
+  >;
+  creditCardById?: Resolver<
+    Maybe<IResolversTypes["CreditCard"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryCreditCardByIdArgs, "_id">
+  >;
   now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
   transactionById?: Resolver<
     Maybe<IResolversTypes["Transaction"]>,
@@ -1084,6 +1179,19 @@ export interface ISafeIntScalarConfig
   name: "SafeInt";
 }
 
+export type IStandardTransactionResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["StandardTransaction"] = IResolversParentTypes["StandardTransaction"],
+> = ResolversObject<{
+  creditCard?: Resolver<
+    Maybe<IResolversTypes["CreditCard"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export interface ITimeScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["Time"], any> {
   name: "Time";
@@ -1108,6 +1216,11 @@ export type ITransactionResolvers<
   amount?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
   category?: Resolver<
     IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType
+  >;
+  creditCard?: Resolver<
+    Maybe<IResolversTypes["CreditCard"]>,
     ParentType,
     ContextType
   >;
@@ -1216,6 +1329,7 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   CountryCode?: GraphQLScalarType;
+  CreditCard?: ICreditCardResolvers<ContextType>;
   Currency?: GraphQLScalarType;
   Cursor?: GraphQLScalarType;
   DID?: GraphQLScalarType;
@@ -1267,6 +1381,7 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   RGBA?: GraphQLScalarType;
   RoutingNumber?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;
+  StandardTransaction?: IStandardTransactionResolvers<ContextType>;
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
