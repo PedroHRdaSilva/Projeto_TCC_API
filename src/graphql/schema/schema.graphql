@@ -197,6 +197,7 @@ type Query {
   now: BigInt
   transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
+  transactionTotals(filterByCategoryId: ObjectID, filterByPeriod: Date!, filterBySearch: String, groupId: ObjectID!): TransactionsTotals
   transactionsGroup(search: String): [TransactionGroup!]!
   viewer: Viewer
 }
@@ -255,6 +256,17 @@ input TransactionInput {
   installmentCount: Int
   isRecurringPayment: Boolean!
   transactionGroupId: ObjectID!
+}
+
+type TransactionsTotalize {
+  percentageVariation: Float!
+  total: Float!
+}
+
+type TransactionsTotals {
+  balance: TransactionsTotalize!
+  expense: TransactionsTotalize!
+  revenue: TransactionsTotalize!
 }
 
 scalar URL

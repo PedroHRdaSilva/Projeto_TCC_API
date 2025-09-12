@@ -5,6 +5,7 @@ import TransactionCategoryModule from "./transaction/TransactionCategoryModule";
 import TransactionModule from "./transaction/TransactionGroupModule";
 import TypesModule from "./TypesModule";
 import UserModule from "./users/UserModule";
+import TransactionTotalsModule from "~/module/transaction/TransactionTotalsModule";
 
 export default [
   AppModule,
@@ -15,4 +16,5 @@ export default [
   TransactionCategoryModule,
   TransactionModule,
   CreditCardModule,
+  TransactionTotalsModule,
 ];
