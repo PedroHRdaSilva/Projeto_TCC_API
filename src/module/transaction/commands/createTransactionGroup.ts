@@ -10,6 +10,7 @@ export default async function createTransactionGroup(
   viewer: Viewer,
   input: ICreateTransactionGroupInput
 ) {
+  console.log("!!!", input);
   const transactionGroup: TransactionGroup = {
     _id: new ObjectId(),
     iconProperties: {

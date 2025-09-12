@@ -20,10 +20,6 @@ const CreditCardModule: GraphQLModule = {
       description: String!
     }
 
-    extend type StandardTransaction {
-      creditCard: CreditCard
-    }
-
     extend type Query {
       creditCardById(_id: ObjectID!): CreditCard
       creditCardByGroupId(transactionGroupId: ObjectID!): [CreditCard!]!
@@ -36,25 +32,6 @@ const CreditCardModule: GraphQLModule = {
     }
   `,
   resolvers: {
-    Transaction: {
-      creditCard: async (source, _args, ctx) => {
-        if (!source.creditCardId) {
-          throw new NotFoundError();
-        }
-
-        const creditCard = await getCreditCardById(
-          ctx.collections,
-          source.creditCardId
-        );
-
-        if (!creditCard) {
-          throw new NotFoundError();
-        }
-
-        return creditCard;
-      },
-    },
-
     Query: {
       creditCardById: async (_source, args, ctx) => {
         if (!ctx.viewer) {

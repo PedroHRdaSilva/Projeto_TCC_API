@@ -5,6 +5,7 @@ import createTransaction from "~/module/transaction/commands/createTransaction";
 import deleteTransaction from "~/module/transaction/commands/deleteTransaciton";
 import updateTransaction from "~/module/transaction/commands/updateTransaction";
 import getCategoryById from "~/module/transaction/queires/getCategoriesById";
+import getCreditCardById from "~/module/transaction/queires/getCreditCardById";
 
 const TransactionModule: GraphQLModule = {
   typeDefs: gql`
@@ -58,6 +59,22 @@ const TransactionModule: GraphQLModule = {
         }
 
         return category;
+      },
+      creditCard: async (source, _args, ctx) => {
+        if (!source.creditCardId) {
+          throw new NotFoundError();
+        }
+
+        const creditCard = await getCreditCardById(
+          ctx.collections,
+          source.creditCardId
+        );
+
+        if (!creditCard) {
+          throw new NotFoundError();
+        }
+
+        return creditCard;
       },
     },
     Mutation: {
