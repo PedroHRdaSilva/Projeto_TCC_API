@@ -285,6 +285,7 @@ export type IQuery = {
   now?: Maybe<Scalars["BigInt"]["output"]>;
   transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
+  transactionTotals?: Maybe<ITransactionsTotals>;
   transactionsGroup: Array<ITransactionGroup>;
   viewer?: Maybe<IViewer>;
 };
@@ -311,6 +312,13 @@ export type IQueryTransactionByIdArgs = {
 
 export type IQueryTransactionGroupByIdArgs = {
   _id?: InputMaybe<Scalars["ObjectID"]["input"]>;
+};
+
+export type IQueryTransactionTotalsArgs = {
+  filterByCategoryId?: InputMaybe<Scalars["ObjectID"]["input"]>;
+  filterByPeriod: Scalars["Date"]["input"];
+  filterBySearch?: InputMaybe<Scalars["String"]["input"]>;
+  groupId: Scalars["ObjectID"]["input"];
 };
 
 export type IQueryTransactionsGroupArgs = {
@@ -360,6 +368,19 @@ export type ITransactionInput = {
   installmentCount?: InputMaybe<Scalars["Int"]["input"]>;
   isRecurringPayment: Scalars["Boolean"]["input"];
   transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
+export type ITransactionsTotalize = {
+  __typename?: "TransactionsTotalize";
+  percentageVariation: Scalars["Float"]["output"];
+  total: Scalars["Float"]["output"];
+};
+
+export type ITransactionsTotals = {
+  __typename?: "TransactionsTotals";
+  balance: ITransactionsTotalize;
+  expense: ITransactionsTotalize;
+  revenue: ITransactionsTotalize;
 };
 
 export type IUpdateCustomInput = {
@@ -605,6 +626,8 @@ export type IResolversTypes = ResolversObject<{
   >;
   TransactionGroup: ResolverTypeWrapper<Partial<ITransactionGroup>>;
   TransactionInput: ResolverTypeWrapper<Partial<ITransactionInput>>;
+  TransactionsTotalize: ResolverTypeWrapper<Partial<ITransactionsTotalize>>;
+  TransactionsTotals: ResolverTypeWrapper<Partial<ITransactionsTotals>>;
   URL: ResolverTypeWrapper<Partial<Scalars["URL"]["output"]>>;
   USCurrency: ResolverTypeWrapper<Partial<Scalars["USCurrency"]["output"]>>;
   UUID: ResolverTypeWrapper<Partial<Scalars["UUID"]["output"]>>;
@@ -699,6 +722,8 @@ export type IResolversParentTypes = ResolversObject<{
   TransactionCategory: TransactionCategory;
   TransactionGroup: Partial<ITransactionGroup>;
   TransactionInput: Partial<ITransactionInput>;
+  TransactionsTotalize: Partial<ITransactionsTotalize>;
+  TransactionsTotals: Partial<ITransactionsTotals>;
   URL: Partial<Scalars["URL"]["output"]>;
   USCurrency: Partial<Scalars["USCurrency"]["output"]>;
   UUID: Partial<Scalars["UUID"]["output"]>;
@@ -1163,6 +1188,12 @@ export type IQueryResolvers<
     ContextType,
     Partial<IQueryTransactionGroupByIdArgs>
   >;
+  transactionTotals?: Resolver<
+    Maybe<IResolversTypes["TransactionsTotals"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryTransactionTotalsArgs, "filterByPeriod" | "groupId">
+  >;
   transactionsGroup?: Resolver<
     Array<IResolversTypes["TransactionGroup"]>,
     ParentType,
@@ -1273,6 +1304,43 @@ export type ITransactionGroupResolvers<
     ContextType
   >;
   owner?: Resolver<IResolversTypes["User"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionsTotalizeResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsTotalize"] = IResolversParentTypes["TransactionsTotalize"],
+> = ResolversObject<{
+  percentageVariation?: Resolver<
+    IResolversTypes["Float"],
+    ParentType,
+    ContextType
+  >;
+  total?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionsTotalsResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsTotals"] = IResolversParentTypes["TransactionsTotals"],
+> = ResolversObject<{
+  balance?: Resolver<
+    IResolversTypes["TransactionsTotalize"],
+    ParentType,
+    ContextType
+  >;
+  expense?: Resolver<
+    IResolversTypes["TransactionsTotalize"],
+    ParentType,
+    ContextType
+  >;
+  revenue?: Resolver<
+    IResolversTypes["TransactionsTotalize"],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1398,6 +1466,8 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   Transaction?: ITransactionResolvers<ContextType>;
   TransactionCategory?: ITransactionCategoryResolvers<ContextType>;
   TransactionGroup?: ITransactionGroupResolvers<ContextType>;
+  TransactionsTotalize?: ITransactionsTotalizeResolvers<ContextType>;
+  TransactionsTotals?: ITransactionsTotalsResolvers<ContextType>;
   URL?: GraphQLScalarType;
   USCurrency?: GraphQLScalarType;
   UUID?: GraphQLScalarType;
