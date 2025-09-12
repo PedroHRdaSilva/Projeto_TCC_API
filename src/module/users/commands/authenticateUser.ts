@@ -1,7 +1,8 @@
-import { GraphQLError } from "graphql";
-import { Collections } from "~/infra/types/Collections";
 import { compareSync } from "bcryptjs";
+import { GraphQLError } from "graphql";
+import jwt from "jsonwebtoken";
 import { UserNotFoundError } from "~/infra/GraphQLErrors";
+import { Collections } from "~/infra/types/Collections";
 
 export default async function authenticateUser(
   collections: Collections,
@@ -16,11 +17,19 @@ export default async function authenticateUser(
 
   if (!compareSync(password, user.password)) {
     throw new GraphQLError("Invalid credentials", {
-      extensions: {
-        code: "NOT_FOUND",
-      },
+      extensions: { code: "NOT_FOUND" },
     });
   }
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not set in environment variables");
+  }
 
-  return true;
+  const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+
+  return {
+    email: user.email,
+    accessToken,
+  };
 }

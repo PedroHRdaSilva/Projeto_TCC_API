@@ -1,7 +1,8 @@
 import express, { json } from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import "dotenv/config";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import schema from "~/graphql/schema";
@@ -9,6 +10,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 import useMongoCollections from "~/infra/useMongoCollections";
 import connectToMongo from "~/infra/connectToMongo";
+import jwt from "jsonwebtoken";
 
 const app = express();
 
@@ -20,8 +22,44 @@ async function startServer() {
     const db = client.db(dbName);
     console.log(`✅ Conectado ao MongoDB no database: ${db.databaseName}`);
 
-    app.use(cors());
-    app.use(json());
+    app.use(cors({ origin: true, credentials: true }));
+    app.use(cookieParser());
+    app.use(json()); // express.json() pode ficar aqui
+
+    // 🟢 Middleware de autenticação
+    app.use(async (req, res, next) => {
+      let token = req.headers.authorization?.replace("Bearer ", "");
+
+      if (!token && req.cookies?.accessToken) {
+        token = req.cookies.accessToken;
+      }
+
+      if (token) {
+        try {
+          const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET || "secret"
+          ) as {
+            userId: string;
+            iat: number;
+            exp: number;
+          };
+
+          const collections = useMongoCollections(client);
+          const user = await collections.users.findOne({
+            _id: new ObjectId(decoded.userId),
+          });
+
+          if (user) {
+            res.locals.viewer = user;
+          }
+        } catch (err) {
+          console.error("JWT inválido:", err);
+        }
+      }
+
+      next();
+    });
 
     const shouldRunSandbox = process.env.NODE_ENV === "development";
 
@@ -37,14 +75,13 @@ async function startServer() {
 
     await server.start();
 
+    // 🟢 ExpressMiddleware do Apollo
     app.use(
       "/graphql",
-      express.json(),
       expressMiddleware(server, {
         context: async ({ req, res }) => {
           const collections = useMongoCollections(client);
-
-          const { viewer } = res.locals;
+          const viewer = (res as any).locals.viewer; // garante que o viewer exista
           return { db, collections, req, res, viewer };
         },
       })

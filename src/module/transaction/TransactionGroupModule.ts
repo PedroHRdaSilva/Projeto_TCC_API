@@ -6,16 +6,22 @@ import createTransactionGroup from "~/module/transaction/commands/createTransact
 import updateTransactionGroup from "~/module/transaction/commands/updateTransactionGroup";
 import deleteTransactionGroup from "~/module/transaction/commands/deleteTransactionGroup";
 import getTransactionGroupById from "~/module/transaction/queires/getTransactionGroupById";
+import getTransactionsGroup from "~/module/transaction/queires/getTransactionsGroup";
+import userLoader from "~/graphql/loaders/userLoader";
 
 const TransactionGroupModule: GraphQLModule = {
   typeDefs: gql`
     type TransactionGroup {
       _id: ObjectID!
-      owner: ObjectID!
+      owner: User!
       iconProperties: IconProperties!
       description: String!
     }
-
+    type User {
+      _id: ObjectID!
+      name: String!
+      email: String!
+    }
     type IconProperties {
       background: String!
       color: String!
@@ -39,7 +45,7 @@ const TransactionGroupModule: GraphQLModule = {
     }
 
     extend type Query {
-      #   # transactionsGroup(search: String): [TransactionGroup!]!
+      transactionsGroup(search: String): [TransactionGroup!]!
       transactionGroupById(_id: ObjectID): TransactionGroup
     }
 
@@ -55,12 +61,26 @@ const TransactionGroupModule: GraphQLModule = {
     }
   `,
   resolvers: {
+    TransactionGroup: {
+      owner: async (_source, _args, ctx) => {
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
+        return userLoader(ctx.viewer._id, ctx.collections);
+      },
+    },
     Query: {
+      transactionsGroup: async (_source, args, ctx) => {
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
+        return getTransactionsGroup(ctx.collections, ctx.viewer, args.search);
+      },
       transactionGroupById: async (_source, args, ctx) => {
         if (!ctx.viewer) {
           throw new ForbiddenError();
         }
-        return getTransactionGroupById(ctx.collections, args._id);
+        return getTransactionGroupById(ctx.collections, ctx.viewer, args._id);
       },
     },
 

@@ -178,7 +178,7 @@ export type IMutation = {
   deleteTransaction: Scalars["Boolean"]["output"];
   deleteTransactionGroup: Scalars["Boolean"]["output"];
   forgotPassword: Scalars["Boolean"]["output"];
-  loginWithCredentials: Scalars["Boolean"]["output"];
+  loginWithCredentials: IAuthenticatedUser;
   now?: Maybe<Scalars["BigInt"]["output"]>;
   resetPassword: Scalars["Boolean"]["output"];
   updateCategory: ITransactionCategory;
@@ -285,6 +285,7 @@ export type IQuery = {
   now?: Maybe<Scalars["BigInt"]["output"]>;
   transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
+  transactionsGroup: Array<ITransactionGroup>;
   viewer?: Maybe<IViewer>;
 };
 
@@ -312,9 +313,8 @@ export type IQueryTransactionGroupByIdArgs = {
   _id?: InputMaybe<Scalars["ObjectID"]["input"]>;
 };
 
-export type IStandardTransaction = {
-  __typename?: "StandardTransaction";
-  creditCard?: Maybe<ICreditCard>;
+export type IQueryTransactionsGroupArgs = {
+  search?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type ITransaction = {
@@ -348,7 +348,7 @@ export type ITransactionGroup = {
   _id: Scalars["ObjectID"]["output"];
   description: Scalars["String"]["output"];
   iconProperties: IIconProperties;
-  owner: Scalars["ObjectID"]["output"];
+  owner: IUser;
 };
 
 export type ITransactionInput = {
@@ -373,6 +373,13 @@ export type IUpdateCustomInput = {
 export type IUpdateTransactionGroupInput = {
   description: Scalars["String"]["input"];
   iconProperties: IIconPropertiesInput;
+};
+
+export type IUser = {
+  __typename?: "User";
+  _id: Scalars["ObjectID"]["output"];
+  email: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type IViewer = {
@@ -587,7 +594,6 @@ export type IResolversTypes = ResolversObject<{
     Partial<Scalars["RoutingNumber"]["output"]>
   >;
   SafeInt: ResolverTypeWrapper<Partial<Scalars["SafeInt"]["output"]>>;
-  StandardTransaction: ResolverTypeWrapper<Partial<IStandardTransaction>>;
   String: ResolverTypeWrapper<Partial<Scalars["String"]["output"]>>;
   Time: ResolverTypeWrapper<Partial<Scalars["Time"]["output"]>>;
   TimeZone: ResolverTypeWrapper<Partial<Scalars["TimeZone"]["output"]>>;
@@ -610,6 +616,7 @@ export type IResolversTypes = ResolversObject<{
   UpdateTransactionGroupInput: ResolverTypeWrapper<
     Partial<IUpdateTransactionGroupInput>
   >;
+  User: ResolverTypeWrapper<Partial<IUser>>;
   UtcOffset: ResolverTypeWrapper<Partial<Scalars["UtcOffset"]["output"]>>;
   Viewer: ResolverTypeWrapper<Partial<IViewer>>;
   Void: ResolverTypeWrapper<Partial<Scalars["Void"]["output"]>>;
@@ -684,7 +691,6 @@ export type IResolversParentTypes = ResolversObject<{
   RGBA: Partial<Scalars["RGBA"]["output"]>;
   RoutingNumber: Partial<Scalars["RoutingNumber"]["output"]>;
   SafeInt: Partial<Scalars["SafeInt"]["output"]>;
-  StandardTransaction: Partial<IStandardTransaction>;
   String: Partial<Scalars["String"]["output"]>;
   Time: Partial<Scalars["Time"]["output"]>;
   TimeZone: Partial<Scalars["TimeZone"]["output"]>;
@@ -700,6 +706,7 @@ export type IResolversParentTypes = ResolversObject<{
   UnsignedInt: Partial<Scalars["UnsignedInt"]["output"]>;
   UpdateCustomInput: Partial<IUpdateCustomInput>;
   UpdateTransactionGroupInput: Partial<IUpdateTransactionGroupInput>;
+  User: Partial<IUser>;
   UtcOffset: Partial<Scalars["UtcOffset"]["output"]>;
   Viewer: Partial<IViewer>;
   Void: Partial<Scalars["Void"]["output"]>;
@@ -990,7 +997,7 @@ export type IMutationResolvers<
     RequireFields<IMutationForgotPasswordArgs, "email">
   >;
   loginWithCredentials?: Resolver<
-    IResolversTypes["Boolean"],
+    IResolversTypes["AuthenticatedUser"],
     ParentType,
     ContextType,
     RequireFields<IMutationLoginWithCredentialsArgs, "email" | "password">
@@ -1156,6 +1163,12 @@ export type IQueryResolvers<
     ContextType,
     Partial<IQueryTransactionGroupByIdArgs>
   >;
+  transactionsGroup?: Resolver<
+    Array<IResolversTypes["TransactionGroup"]>,
+    ParentType,
+    ContextType,
+    Partial<IQueryTransactionsGroupArgs>
+  >;
   viewer?: Resolver<Maybe<IResolversTypes["Viewer"]>, ParentType, ContextType>;
 }>;
 
@@ -1178,19 +1191,6 @@ export interface ISafeIntScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["SafeInt"], any> {
   name: "SafeInt";
 }
-
-export type IStandardTransactionResolvers<
-  ContextType = TGraphQLContext,
-  ParentType extends
-    IResolversParentTypes["StandardTransaction"] = IResolversParentTypes["StandardTransaction"],
-> = ResolversObject<{
-  creditCard?: Resolver<
-    Maybe<IResolversTypes["CreditCard"]>,
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
 
 export interface ITimeScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["Time"], any> {
@@ -1272,7 +1272,7 @@ export type ITransactionGroupResolvers<
     ParentType,
     ContextType
   >;
-  owner?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  owner?: Resolver<IResolversTypes["User"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1300,6 +1300,17 @@ export interface IUnsignedIntScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["UnsignedInt"], any> {
   name: "UnsignedInt";
 }
+
+export type IUserResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["User"] = IResolversParentTypes["User"],
+> = ResolversObject<{
+  _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  email?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  name?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export interface IUtcOffsetScalarConfig
   extends GraphQLScalarTypeConfig<IResolversTypes["UtcOffset"], any> {
@@ -1381,7 +1392,6 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   RGBA?: GraphQLScalarType;
   RoutingNumber?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;
-  StandardTransaction?: IStandardTransactionResolvers<ContextType>;
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
@@ -1393,6 +1403,7 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   UUID?: GraphQLScalarType;
   UnsignedFloat?: GraphQLScalarType;
   UnsignedInt?: GraphQLScalarType;
+  User?: IUserResolvers<ContextType>;
   UtcOffset?: GraphQLScalarType;
   Viewer?: IViewerResolvers<ContextType>;
   Void?: GraphQLScalarType;

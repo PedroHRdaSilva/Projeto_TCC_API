@@ -138,7 +138,7 @@ type Mutation {
   deleteTransaction(_id: ObjectID!): Boolean!
   deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean!
-  loginWithCredentials(email: String!, password: String!): Boolean!
+  loginWithCredentials(email: String!, password: String!): AuthenticatedUser!
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
   updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
@@ -197,6 +197,7 @@ type Query {
   now: BigInt
   transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
+  transactionsGroup(search: String): [TransactionGroup!]!
   viewer: Viewer
 }
 
@@ -207,10 +208,6 @@ scalar RGBA
 scalar RoutingNumber
 
 scalar SafeInt
-
-type StandardTransaction {
-  creditCard: CreditCard
-}
 
 scalar Time
 
@@ -246,7 +243,7 @@ type TransactionGroup {
   _id: ObjectID!
   description: String!
   iconProperties: IconProperties!
-  owner: ObjectID!
+  owner: User!
 }
 
 input TransactionInput {
@@ -281,6 +278,12 @@ input UpdateCustomInput {
 input UpdateTransactionGroupInput {
   description: String!
   iconProperties: IconPropertiesInput!
+}
+
+type User {
+  _id: ObjectID!
+  email: String!
+  name: String!
 }
 
 scalar UtcOffset
