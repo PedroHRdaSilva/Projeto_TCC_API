@@ -9,16 +9,16 @@ export default async function deleteCategory(
   _id: ObjectId,
   groupId: ObjectId
 ) {
-  //   const transactions = await collections.transactions.details
-  //     .find({
-  //       categoryId: _id,
-  //       deletedAt: { $exists: false },
-  //     })
-  //     .toArray();
+  const transactions = await collections.transactions.detail
+    .find({
+      categoryId: _id,
+      deletedAt: { $exists: false },
+    })
+    .toArray();
 
-  //   if (transactions.length > 0) {
-  //     throw new GraphQLError("There are transactions linked to this category");
-  //   }
+  if (transactions.length > 0) {
+    throw new GraphQLError("There are transactions linked to this category");
+  }
   const category = await collections.transactions.categories.custom.findOne({
     _id,
     deletedAt: { $exists: false },
