@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 import type { GraphQLModule } from "~/graphql/module";
-import { ForbiddenError, NotFoundError } from "~/infra/GraphQLErrors";
+import { ForbiddenError } from "~/infra/GraphQLErrors";
 import createCreditCard from "~/module/transaction/commands/createCreditCard";
 import deleteCreditCard from "~/module/transaction/commands/deleteCreditCard";
 import updateCreditCard from "~/module/transaction/commands/updateCreditcard";

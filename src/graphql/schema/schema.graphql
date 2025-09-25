@@ -198,6 +198,7 @@ type Query {
   transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
   transactionTotals(filterByCategoryId: ObjectID, filterByPeriod: Date!, filterBySearch: String, groupId: ObjectID!): TransactionsTotals
+  transactions(cursor: Cursor, filterByCategoryId: ObjectID, filterByPeriod: Date!, filterBySearch: String, groupId: ObjectID!, limit: Int = 50): TransactionDetailsPagination!
   transactionsGroup(search: String): [TransactionGroup!]!
   viewer: Viewer
 }
@@ -224,6 +225,7 @@ type Transaction {
   date: Date!
   description: String!
   installments: Installments
+  isRecurringPayment: Boolean!
   transactionGroupId: ObjectID!
 }
 
@@ -240,11 +242,28 @@ enum TransactionCategoryTypeEnum {
   EXPENSES
 }
 
+type TransactionDetailsPagination {
+  nodes: [Transaction!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type TransactionGroup {
   _id: ObjectID!
   description: String!
   iconProperties: IconProperties!
   owner: User!
+}
+
+type TransactionGrouped {
+  groupBy: ObjectID!
+  nodes: [Transaction!]!
+}
+
+type TransactionGroupedDetailsPagination {
+  groups: [TransactionGrouped!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 input TransactionInput {
@@ -256,6 +275,13 @@ input TransactionInput {
   installmentCount: Int
   isRecurringPayment: Boolean!
   transactionGroupId: ObjectID!
+}
+
+type TransactionsGroupedByCategoryPagination {
+  groupBy: ObjectID!
+  nodes: [Transaction!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type TransactionsTotalize {

@@ -28,6 +28,7 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>;
 };
@@ -286,6 +287,7 @@ export type IQuery = {
   transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
   transactionTotals?: Maybe<ITransactionsTotals>;
+  transactions: ITransactionDetailsPagination;
   transactionsGroup: Array<ITransactionGroup>;
   viewer?: Maybe<IViewer>;
 };
@@ -321,6 +323,15 @@ export type IQueryTransactionTotalsArgs = {
   groupId: Scalars["ObjectID"]["input"];
 };
 
+export type IQueryTransactionsArgs = {
+  cursor?: InputMaybe<Scalars["Cursor"]["input"]>;
+  filterByCategoryId?: InputMaybe<Scalars["ObjectID"]["input"]>;
+  filterByPeriod: Scalars["Date"]["input"];
+  filterBySearch?: InputMaybe<Scalars["String"]["input"]>;
+  groupId: Scalars["ObjectID"]["input"];
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type IQueryTransactionsGroupArgs = {
   search?: InputMaybe<Scalars["String"]["input"]>;
 };
@@ -334,6 +345,7 @@ export type ITransaction = {
   date: Scalars["Date"]["output"];
   description: Scalars["String"]["output"];
   installments?: Maybe<IInstallments>;
+  isRecurringPayment: Scalars["Boolean"]["output"];
   transactionGroupId: Scalars["ObjectID"]["output"];
 };
 
@@ -351,12 +363,32 @@ export enum ITransactionCategoryTypeEnum {
   Expenses = "EXPENSES",
 }
 
+export type ITransactionDetailsPagination = {
+  __typename?: "TransactionDetailsPagination";
+  nodes: Array<ITransaction>;
+  pageInfo: IPageInfo;
+  totalCount: Scalars["Int"]["output"];
+};
+
 export type ITransactionGroup = {
   __typename?: "TransactionGroup";
   _id: Scalars["ObjectID"]["output"];
   description: Scalars["String"]["output"];
   iconProperties: IIconProperties;
   owner: IUser;
+};
+
+export type ITransactionGrouped = {
+  __typename?: "TransactionGrouped";
+  groupBy: Scalars["ObjectID"]["output"];
+  nodes: Array<ITransaction>;
+};
+
+export type ITransactionGroupedDetailsPagination = {
+  __typename?: "TransactionGroupedDetailsPagination";
+  groups: Array<ITransactionGrouped>;
+  pageInfo: IPageInfo;
+  totalCount: Scalars["Int"]["output"];
 };
 
 export type ITransactionInput = {
@@ -368,6 +400,14 @@ export type ITransactionInput = {
   installmentCount?: InputMaybe<Scalars["Int"]["input"]>;
   isRecurringPayment: Scalars["Boolean"]["input"];
   transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
+export type ITransactionsGroupedByCategoryPagination = {
+  __typename?: "TransactionsGroupedByCategoryPagination";
+  groupBy: Scalars["ObjectID"]["output"];
+  nodes: Array<ITransaction>;
+  pageInfo: IPageInfo;
+  totalCount: Scalars["Int"]["output"];
 };
 
 export type ITransactionsTotalize = {
@@ -624,8 +664,36 @@ export type IResolversTypes = ResolversObject<{
   TransactionCategoryTypeEnum: ResolverTypeWrapper<
     Partial<ITransactionCategoryTypeEnum>
   >;
+  TransactionDetailsPagination: ResolverTypeWrapper<
+    Partial<
+      Omit<ITransactionDetailsPagination, "nodes"> & {
+        nodes: Array<IResolversTypes["Transaction"]>;
+      }
+    >
+  >;
   TransactionGroup: ResolverTypeWrapper<Partial<ITransactionGroup>>;
+  TransactionGrouped: ResolverTypeWrapper<
+    Partial<
+      Omit<ITransactionGrouped, "nodes"> & {
+        nodes: Array<IResolversTypes["Transaction"]>;
+      }
+    >
+  >;
+  TransactionGroupedDetailsPagination: ResolverTypeWrapper<
+    Partial<
+      Omit<ITransactionGroupedDetailsPagination, "groups"> & {
+        groups: Array<IResolversTypes["TransactionGrouped"]>;
+      }
+    >
+  >;
   TransactionInput: ResolverTypeWrapper<Partial<ITransactionInput>>;
+  TransactionsGroupedByCategoryPagination: ResolverTypeWrapper<
+    Partial<
+      Omit<ITransactionsGroupedByCategoryPagination, "nodes"> & {
+        nodes: Array<IResolversTypes["Transaction"]>;
+      }
+    >
+  >;
   TransactionsTotalize: ResolverTypeWrapper<Partial<ITransactionsTotalize>>;
   TransactionsTotals: ResolverTypeWrapper<Partial<ITransactionsTotals>>;
   URL: ResolverTypeWrapper<Partial<Scalars["URL"]["output"]>>;
@@ -720,8 +788,28 @@ export type IResolversParentTypes = ResolversObject<{
   Timestamp: Partial<Scalars["Timestamp"]["output"]>;
   Transaction: Transaction;
   TransactionCategory: TransactionCategory;
+  TransactionDetailsPagination: Partial<
+    Omit<ITransactionDetailsPagination, "nodes"> & {
+      nodes: Array<IResolversParentTypes["Transaction"]>;
+    }
+  >;
   TransactionGroup: Partial<ITransactionGroup>;
+  TransactionGrouped: Partial<
+    Omit<ITransactionGrouped, "nodes"> & {
+      nodes: Array<IResolversParentTypes["Transaction"]>;
+    }
+  >;
+  TransactionGroupedDetailsPagination: Partial<
+    Omit<ITransactionGroupedDetailsPagination, "groups"> & {
+      groups: Array<IResolversParentTypes["TransactionGrouped"]>;
+    }
+  >;
   TransactionInput: Partial<ITransactionInput>;
+  TransactionsGroupedByCategoryPagination: Partial<
+    Omit<ITransactionsGroupedByCategoryPagination, "nodes"> & {
+      nodes: Array<IResolversParentTypes["Transaction"]>;
+    }
+  >;
   TransactionsTotalize: Partial<ITransactionsTotalize>;
   TransactionsTotals: Partial<ITransactionsTotals>;
   URL: Partial<Scalars["URL"]["output"]>;
@@ -1194,6 +1282,15 @@ export type IQueryResolvers<
     ContextType,
     RequireFields<IQueryTransactionTotalsArgs, "filterByPeriod" | "groupId">
   >;
+  transactions?: Resolver<
+    IResolversTypes["TransactionDetailsPagination"],
+    ParentType,
+    ContextType,
+    RequireFields<
+      IQueryTransactionsArgs,
+      "filterByPeriod" | "groupId" | "limit"
+    >
+  >;
   transactionsGroup?: Resolver<
     Array<IResolversTypes["TransactionGroup"]>,
     ParentType,
@@ -1262,6 +1359,11 @@ export type ITransactionResolvers<
     ParentType,
     ContextType
   >;
+  isRecurringPayment?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType
+  >;
   transactionGroupId?: Resolver<
     IResolversTypes["ObjectID"],
     ParentType,
@@ -1291,6 +1393,21 @@ export type ITransactionCategoryResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ITransactionDetailsPaginationResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionDetailsPagination"] = IResolversParentTypes["TransactionDetailsPagination"],
+> = ResolversObject<{
+  nodes?: Resolver<
+    Array<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<IResolversTypes["PageInfo"], ParentType, ContextType>;
+  totalCount?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ITransactionGroupResolvers<
   ContextType = TGraphQLContext,
   ParentType extends
@@ -1304,6 +1421,51 @@ export type ITransactionGroupResolvers<
     ContextType
   >;
   owner?: Resolver<IResolversTypes["User"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionGroupedResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionGrouped"] = IResolversParentTypes["TransactionGrouped"],
+> = ResolversObject<{
+  groupBy?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  nodes?: Resolver<
+    Array<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionGroupedDetailsPaginationResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionGroupedDetailsPagination"] = IResolversParentTypes["TransactionGroupedDetailsPagination"],
+> = ResolversObject<{
+  groups?: Resolver<
+    Array<IResolversTypes["TransactionGrouped"]>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<IResolversTypes["PageInfo"], ParentType, ContextType>;
+  totalCount?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionsGroupedByCategoryPaginationResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsGroupedByCategoryPagination"] = IResolversParentTypes["TransactionsGroupedByCategoryPagination"],
+> = ResolversObject<{
+  groupBy?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
+  nodes?: Resolver<
+    Array<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<IResolversTypes["PageInfo"], ParentType, ContextType>;
+  totalCount?: Resolver<IResolversTypes["Int"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1465,7 +1627,11 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   Timestamp?: GraphQLScalarType;
   Transaction?: ITransactionResolvers<ContextType>;
   TransactionCategory?: ITransactionCategoryResolvers<ContextType>;
+  TransactionDetailsPagination?: ITransactionDetailsPaginationResolvers<ContextType>;
   TransactionGroup?: ITransactionGroupResolvers<ContextType>;
+  TransactionGrouped?: ITransactionGroupedResolvers<ContextType>;
+  TransactionGroupedDetailsPagination?: ITransactionGroupedDetailsPaginationResolvers<ContextType>;
+  TransactionsGroupedByCategoryPagination?: ITransactionsGroupedByCategoryPaginationResolvers<ContextType>;
   TransactionsTotalize?: ITransactionsTotalizeResolvers<ContextType>;
   TransactionsTotals?: ITransactionsTotalsResolvers<ContextType>;
   URL?: GraphQLScalarType;
