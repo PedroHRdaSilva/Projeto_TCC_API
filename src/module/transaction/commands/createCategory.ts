@@ -21,7 +21,7 @@ export default async function createCategory(
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-
+  console.log(transactionCategory);
   await collections.transactions.categories.custom.insertOne(
     transactionCategory
   );
