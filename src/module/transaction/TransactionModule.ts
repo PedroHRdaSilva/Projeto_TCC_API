@@ -63,7 +63,7 @@ const TransactionModule: GraphQLModule = {
       },
       creditCard: async (source, _args, ctx) => {
         if (!source.creditCardId) {
-          throw new NotFoundError();
+          return null;
         }
 
         const creditCard = await getCreditCardById(
@@ -80,9 +80,9 @@ const TransactionModule: GraphQLModule = {
     },
     Mutation: {
       createTransaction: async (_source, args, ctx) => {
-        // if (!ctx.viewer) {
-        //   throw new ForbiddenError();
-        // }
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
         return createTransaction(ctx.collections, args.input);
       },
       updateTransaction: async (_source, args, ctx) => {
