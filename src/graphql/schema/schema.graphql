@@ -329,7 +329,6 @@ scalar UtcOffset
 type Viewer {
   _id: ObjectID!
   email: String!
-  isAdmin: Boolean!
   name: String!
 }
 

@@ -447,7 +447,6 @@ export type IViewer = {
   __typename?: "Viewer";
   _id: Scalars["ObjectID"]["output"];
   email: Scalars["String"]["output"];
-  isAdmin: Scalars["Boolean"]["output"];
   name: Scalars["String"]["output"];
 };
 
@@ -1554,7 +1553,6 @@ export type IViewerResolvers<
 > = ResolversObject<{
   _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
   email?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
-  isAdmin?: Resolver<IResolversTypes["Boolean"], ParentType, ContextType>;
   name?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

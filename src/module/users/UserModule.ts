@@ -12,7 +12,6 @@ const UserModule: GraphQLModule = {
       _id: ObjectID!
       name: String!
       email: String!
-      isAdmin: Boolean!
     }
 
     type AuthenticatedUser {
