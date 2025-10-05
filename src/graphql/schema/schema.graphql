@@ -190,10 +190,13 @@ scalar PositiveInt
 scalar PostalCode
 
 type Query {
+  cardCategorySpending(filterByEndMonth: Date, filterByStartMonth: Date, groupId: ObjectID!): [TransactionsCardCategorySpending!]!
   categoriesByGroupId(transactionGroupId: ObjectID!): [TransactionCategory!]!
   categoryById(categoryId: ObjectID!): TransactionCategory
   creditCardByGroupId(transactionGroupId: ObjectID!): [CreditCard!]!
   creditCardById(_id: ObjectID!): CreditCard
+  monthlyRevenueVsExpenses(filterByEndMonth: Date, filterByStartMonth: Date, groupId: ObjectID!): [TransactionsChart!]!
+  monthlySpendingByCategory(filterByEndMonth: Date, filterByStartMonth: Date, groupId: ObjectID!): [TransactionsByCategoryChart!]!
   now: BigInt
   transactionById(_id: ObjectID!): Transaction
   transactionGroupById(_id: ObjectID): TransactionGroup
@@ -275,6 +278,28 @@ input TransactionInput {
   installmentCount: Int
   isRecurringPayment: Boolean!
   transactionGroupId: ObjectID!
+}
+
+type TransactionsByCategoryChart {
+  amount: Float!
+  category: TransactionCategory!
+  reportDate: Date!
+  transactions: [Transaction!]
+}
+
+type TransactionsCardCategorySpending {
+  amount: Float!
+  category: TransactionCategory!
+  creditCard: CreditCard!
+  reportDate: Date!
+  transactions: [Transaction!]
+}
+
+type TransactionsChart {
+  expense: Float!
+  reportDate: Date!
+  revenue: Float!
+  transactions: [Transaction!]!
 }
 
 type TransactionsGroupedByCategoryPagination {

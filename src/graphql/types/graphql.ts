@@ -7,6 +7,8 @@ import {
 } from "graphql";
 import { TransactionCategory } from "../../module/transaction/models/TransactionCategory";
 import { Transaction } from "../../module/transaction/models/Transaction";
+import { TransactionsByCategoryChart } from "../../modules/transaction/models/TransactionsByCategoryChart";
+import { TransactionsCardCategorySpending } from "../../modules/Transaction/models/TransactionsCardCategorySpending";
 import { TGraphQLContext } from "./GraphqlContext";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -279,10 +281,13 @@ export type IPageInfo = {
 
 export type IQuery = {
   __typename?: "Query";
+  cardCategorySpending: Array<ITransactionsCardCategorySpending>;
   categoriesByGroupId: Array<ITransactionCategory>;
   categoryById?: Maybe<ITransactionCategory>;
   creditCardByGroupId: Array<ICreditCard>;
   creditCardById?: Maybe<ICreditCard>;
+  monthlyRevenueVsExpenses: Array<ITransactionsChart>;
+  monthlySpendingByCategory: Array<ITransactionsByCategoryChart>;
   now?: Maybe<Scalars["BigInt"]["output"]>;
   transactionById?: Maybe<ITransaction>;
   transactionGroupById?: Maybe<ITransactionGroup>;
@@ -290,6 +295,12 @@ export type IQuery = {
   transactions: ITransactionDetailsPagination;
   transactionsGroup: Array<ITransactionGroup>;
   viewer?: Maybe<IViewer>;
+};
+
+export type IQueryCardCategorySpendingArgs = {
+  filterByEndMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  filterByStartMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  groupId: Scalars["ObjectID"]["input"];
 };
 
 export type IQueryCategoriesByGroupIdArgs = {
@@ -306,6 +317,18 @@ export type IQueryCreditCardByGroupIdArgs = {
 
 export type IQueryCreditCardByIdArgs = {
   _id: Scalars["ObjectID"]["input"];
+};
+
+export type IQueryMonthlyRevenueVsExpensesArgs = {
+  filterByEndMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  filterByStartMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  groupId: Scalars["ObjectID"]["input"];
+};
+
+export type IQueryMonthlySpendingByCategoryArgs = {
+  filterByEndMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  filterByStartMonth?: InputMaybe<Scalars["Date"]["input"]>;
+  groupId: Scalars["ObjectID"]["input"];
 };
 
 export type IQueryTransactionByIdArgs = {
@@ -400,6 +423,31 @@ export type ITransactionInput = {
   installmentCount?: InputMaybe<Scalars["Int"]["input"]>;
   isRecurringPayment: Scalars["Boolean"]["input"];
   transactionGroupId: Scalars["ObjectID"]["input"];
+};
+
+export type ITransactionsByCategoryChart = {
+  __typename?: "TransactionsByCategoryChart";
+  amount: Scalars["Float"]["output"];
+  category: ITransactionCategory;
+  reportDate: Scalars["Date"]["output"];
+  transactions?: Maybe<Array<ITransaction>>;
+};
+
+export type ITransactionsCardCategorySpending = {
+  __typename?: "TransactionsCardCategorySpending";
+  amount: Scalars["Float"]["output"];
+  category: ITransactionCategory;
+  creditCard: ICreditCard;
+  reportDate: Scalars["Date"]["output"];
+  transactions?: Maybe<Array<ITransaction>>;
+};
+
+export type ITransactionsChart = {
+  __typename?: "TransactionsChart";
+  expense: Scalars["Float"]["output"];
+  reportDate: Scalars["Date"]["output"];
+  revenue: Scalars["Float"]["output"];
+  transactions: Array<ITransaction>;
 };
 
 export type ITransactionsGroupedByCategoryPagination = {
@@ -686,6 +734,15 @@ export type IResolversTypes = ResolversObject<{
     >
   >;
   TransactionInput: ResolverTypeWrapper<Partial<ITransactionInput>>;
+  TransactionsByCategoryChart: ResolverTypeWrapper<TransactionsByCategoryChart>;
+  TransactionsCardCategorySpending: ResolverTypeWrapper<TransactionsCardCategorySpending>;
+  TransactionsChart: ResolverTypeWrapper<
+    Partial<
+      Omit<ITransactionsChart, "transactions"> & {
+        transactions: Array<IResolversTypes["Transaction"]>;
+      }
+    >
+  >;
   TransactionsGroupedByCategoryPagination: ResolverTypeWrapper<
     Partial<
       Omit<ITransactionsGroupedByCategoryPagination, "nodes"> & {
@@ -804,6 +861,13 @@ export type IResolversParentTypes = ResolversObject<{
     }
   >;
   TransactionInput: Partial<ITransactionInput>;
+  TransactionsByCategoryChart: TransactionsByCategoryChart;
+  TransactionsCardCategorySpending: TransactionsCardCategorySpending;
+  TransactionsChart: Partial<
+    Omit<ITransactionsChart, "transactions"> & {
+      transactions: Array<IResolversParentTypes["Transaction"]>;
+    }
+  >;
   TransactionsGroupedByCategoryPagination: Partial<
     Omit<ITransactionsGroupedByCategoryPagination, "nodes"> & {
       nodes: Array<IResolversParentTypes["Transaction"]>;
@@ -1238,6 +1302,12 @@ export type IQueryResolvers<
   ParentType extends
     IResolversParentTypes["Query"] = IResolversParentTypes["Query"],
 > = ResolversObject<{
+  cardCategorySpending?: Resolver<
+    Array<IResolversTypes["TransactionsCardCategorySpending"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryCardCategorySpendingArgs, "groupId">
+  >;
   categoriesByGroupId?: Resolver<
     Array<IResolversTypes["TransactionCategory"]>,
     ParentType,
@@ -1261,6 +1331,18 @@ export type IQueryResolvers<
     ParentType,
     ContextType,
     RequireFields<IQueryCreditCardByIdArgs, "_id">
+  >;
+  monthlyRevenueVsExpenses?: Resolver<
+    Array<IResolversTypes["TransactionsChart"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryMonthlyRevenueVsExpensesArgs, "groupId">
+  >;
+  monthlySpendingByCategory?: Resolver<
+    Array<IResolversTypes["TransactionsByCategoryChart"]>,
+    ParentType,
+    ContextType,
+    RequireFields<IQueryMonthlySpendingByCategoryArgs, "groupId">
   >;
   now?: Resolver<Maybe<IResolversTypes["BigInt"]>, ParentType, ContextType>;
   transactionById?: Resolver<
@@ -1452,6 +1534,63 @@ export type ITransactionGroupedDetailsPaginationResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ITransactionsByCategoryChartResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsByCategoryChart"] = IResolversParentTypes["TransactionsByCategoryChart"],
+> = ResolversObject<{
+  amount?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  category?: Resolver<
+    IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType
+  >;
+  reportDate?: Resolver<IResolversTypes["Date"], ParentType, ContextType>;
+  transactions?: Resolver<
+    Maybe<Array<IResolversTypes["Transaction"]>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionsCardCategorySpendingResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsCardCategorySpending"] = IResolversParentTypes["TransactionsCardCategorySpending"],
+> = ResolversObject<{
+  amount?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  category?: Resolver<
+    IResolversTypes["TransactionCategory"],
+    ParentType,
+    ContextType
+  >;
+  creditCard?: Resolver<IResolversTypes["CreditCard"], ParentType, ContextType>;
+  reportDate?: Resolver<IResolversTypes["Date"], ParentType, ContextType>;
+  transactions?: Resolver<
+    Maybe<Array<IResolversTypes["Transaction"]>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ITransactionsChartResolvers<
+  ContextType = TGraphQLContext,
+  ParentType extends
+    IResolversParentTypes["TransactionsChart"] = IResolversParentTypes["TransactionsChart"],
+> = ResolversObject<{
+  expense?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  reportDate?: Resolver<IResolversTypes["Date"], ParentType, ContextType>;
+  revenue?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
+  transactions?: Resolver<
+    Array<IResolversTypes["Transaction"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ITransactionsGroupedByCategoryPaginationResolvers<
   ContextType = TGraphQLContext,
   ParentType extends
@@ -1629,6 +1768,9 @@ export type IResolvers<ContextType = TGraphQLContext> = ResolversObject<{
   TransactionGroup?: ITransactionGroupResolvers<ContextType>;
   TransactionGrouped?: ITransactionGroupedResolvers<ContextType>;
   TransactionGroupedDetailsPagination?: ITransactionGroupedDetailsPaginationResolvers<ContextType>;
+  TransactionsByCategoryChart?: ITransactionsByCategoryChartResolvers<ContextType>;
+  TransactionsCardCategorySpending?: ITransactionsCardCategorySpendingResolvers<ContextType>;
+  TransactionsChart?: ITransactionsChartResolvers<ContextType>;
   TransactionsGroupedByCategoryPagination?: ITransactionsGroupedByCategoryPaginationResolvers<ContextType>;
   TransactionsTotalize?: ITransactionsTotalizeResolvers<ContextType>;
   TransactionsTotals?: ITransactionsTotalsResolvers<ContextType>;

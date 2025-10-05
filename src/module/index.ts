@@ -8,6 +8,7 @@ import TransactionTotalsModule from "~/module/transaction/TransactionTotalsModul
 import TransactionGroupModule from "./transaction/TransactionGroupModule";
 import TransactionModule from "~/module/transaction/TransactionModule";
 import TransactionsModule from "~/module/transaction/TransactionsModule";
+import TransactionsChartModule from "~/module/transaction/TransactionsChartModule";
 
 export default [
   AppModule,
@@ -19,5 +20,6 @@ export default [
   TransactionModule,
   CreditCardModule,
   TransactionTotalsModule,
+  TransactionsChartModule,
   TransactionsModule,
 ];

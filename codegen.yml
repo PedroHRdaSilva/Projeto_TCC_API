@@ -24,6 +24,8 @@ generates:
       mappers:
         TransactionCategory: ../../module/transaction/models/TransactionCategory#TransactionCategory
         Transaction: ../../module/transaction/models/Transaction#Transaction
+        TransactionsByCategoryChart: ../../modules/transaction/models/TransactionsByCategoryChart#TransactionsByCategoryChart
+        TransactionsCardCategorySpending: ../../modules/Transaction/models/TransactionsCardCategorySpending#TransactionsCardCategorySpending
     plugins:
       - "typescript"
       - "typescript-resolvers"
