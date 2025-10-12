@@ -184,6 +184,7 @@ export type IMutation = {
   loginWithCredentials: IAuthenticatedUser;
   now?: Maybe<Scalars["BigInt"]["output"]>;
   resetPassword: Scalars["Boolean"]["output"];
+  transactionStatus: Scalars["Boolean"]["output"];
   updateCategory: ITransactionCategory;
   updateCreditCard: ICreditCard;
   updateTransaction?: Maybe<ITransaction>;
@@ -239,6 +240,11 @@ export type IMutationLoginWithCredentialsArgs = {
 export type IMutationResetPasswordArgs = {
   password: Scalars["String"]["input"];
   token: Scalars["String"]["input"];
+};
+
+export type IMutationTransactionStatusArgs = {
+  _id: Array<Scalars["ObjectID"]["input"]>;
+  status: ITransactionStatus;
 };
 
 export type IMutationUpdateCategoryArgs = {
@@ -369,6 +375,7 @@ export type ITransaction = {
   description: Scalars["String"]["output"];
   installments?: Maybe<IInstallments>;
   isRecurringPayment: Scalars["Boolean"]["output"];
+  status?: Maybe<ITransactionStatus>;
   transactionGroupId: Scalars["ObjectID"]["output"];
 };
 
@@ -424,6 +431,11 @@ export type ITransactionInput = {
   isRecurringPayment: Scalars["Boolean"]["input"];
   transactionGroupId: Scalars["ObjectID"]["input"];
 };
+
+export enum ITransactionStatus {
+  Paid = "PAID",
+  Pending = "PENDING",
+}
 
 export type ITransactionsByCategoryChart = {
   __typename?: "TransactionsByCategoryChart";
@@ -734,6 +746,7 @@ export type IResolversTypes = ResolversObject<{
     >
   >;
   TransactionInput: ResolverTypeWrapper<Partial<ITransactionInput>>;
+  TransactionStatus: ResolverTypeWrapper<Partial<ITransactionStatus>>;
   TransactionsByCategoryChart: ResolverTypeWrapper<TransactionsByCategoryChart>;
   TransactionsCardCategorySpending: ResolverTypeWrapper<TransactionsCardCategorySpending>;
   TransactionsChart: ResolverTypeWrapper<
@@ -1185,6 +1198,12 @@ export type IMutationResolvers<
     ContextType,
     RequireFields<IMutationResetPasswordArgs, "password" | "token">
   >;
+  transactionStatus?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationTransactionStatusArgs, "_id" | "status">
+  >;
   updateCategory?: Resolver<
     IResolversTypes["TransactionCategory"],
     ParentType,
@@ -1442,6 +1461,11 @@ export type ITransactionResolvers<
   >;
   isRecurringPayment?: Resolver<
     IResolversTypes["Boolean"],
+    ParentType,
+    ContextType
+  >;
+  status?: Resolver<
+    Maybe<IResolversTypes["TransactionStatus"]>,
     ParentType,
     ContextType
   >;

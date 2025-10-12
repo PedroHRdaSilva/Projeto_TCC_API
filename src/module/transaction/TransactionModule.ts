@@ -3,12 +3,17 @@ import { GraphQLModule } from "~/graphql/module";
 import { ForbiddenError, NotFoundError } from "~/infra/GraphQLErrors";
 import createTransaction from "~/module/transaction/commands/createTransaction";
 import deleteTransaction from "~/module/transaction/commands/deleteTransaciton";
+import transactionStatus from "~/module/transaction/commands/transactionStatus";
 import updateTransaction from "~/module/transaction/commands/updateTransaction";
 import getCategoryById from "~/module/transaction/queires/getCategoriesById";
 import getCreditCardById from "~/module/transaction/queires/getCreditCardById";
 
 const TransactionModule: GraphQLModule = {
   typeDefs: gql`
+    enum TransactionStatus {
+      PENDING
+      PAID
+    }
     type Installments {
       total: Int!
       current: Int!
@@ -23,6 +28,7 @@ const TransactionModule: GraphQLModule = {
       installments: Installments
       creditCard: CreditCard
       isRecurringPayment: Boolean!
+      status: TransactionStatus
     }
 
     extend type Query {
@@ -45,6 +51,7 @@ const TransactionModule: GraphQLModule = {
       updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
 
       deleteTransaction(_id: ObjectID!): Boolean!
+      transactionStatus(_id: [ObjectID!]!, status: TransactionStatus!): Boolean!
     }
   `,
   resolvers: {
@@ -79,6 +86,12 @@ const TransactionModule: GraphQLModule = {
       },
     },
     Mutation: {
+      transactionStatus: async (_source, args, ctx) => {
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
+        return transactionStatus(ctx.collections, args._id, args.status);
+      },
       createTransaction: async (_source, args, ctx) => {
         if (!ctx.viewer) {
           throw new ForbiddenError();
