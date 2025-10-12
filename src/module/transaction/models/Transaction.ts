@@ -1,4 +1,5 @@
 import type { ObjectId } from "mongodb";
+import { ITransactionStatus } from "~/graphql/types/graphql";
 import { DefaultFieldsWithDeleted } from "~/utils/CommonTypes";
 
 export type Installments = {
@@ -16,4 +17,5 @@ export type Transaction = DefaultFieldsWithDeleted & {
   isRecurringPayment?: boolean;
   creditCardId?: ObjectId;
   installments?: Installments;
+  status?: ITransactionStatus;
 };

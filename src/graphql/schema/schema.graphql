@@ -141,6 +141,7 @@ type Mutation {
   loginWithCredentials(email: String!, password: String!): AuthenticatedUser!
   now: BigInt
   resetPassword(password: String!, token: String!): Boolean!
+  transactionStatus(_id: [ObjectID!]!, status: TransactionStatus!): Boolean!
   updateCategory(_id: ObjectID!, input: UpdateCustomInput!): TransactionCategory!
   updateCreditCard(_id: ObjectID!, input: CreditCardInput!): CreditCard!
   updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
@@ -229,6 +230,7 @@ type Transaction {
   description: String!
   installments: Installments
   isRecurringPayment: Boolean!
+  status: TransactionStatus
   transactionGroupId: ObjectID!
 }
 
@@ -278,6 +280,11 @@ input TransactionInput {
   installmentCount: Int
   isRecurringPayment: Boolean!
   transactionGroupId: ObjectID!
+}
+
+enum TransactionStatus {
+  PAID
+  PENDING
 }
 
 type TransactionsByCategoryChart {

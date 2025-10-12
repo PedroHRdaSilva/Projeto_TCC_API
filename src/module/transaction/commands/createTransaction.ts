@@ -1,6 +1,6 @@
 import { addMonths } from "date-fns/addMonths";
 import { ObjectId } from "mongodb";
-import { ITransactionInput } from "~/graphql/types/graphql";
+import { ITransactionInput, ITransactionStatus } from "~/graphql/types/graphql";
 import { Collections } from "~/infra/types/Collections";
 import { Transaction } from "~/module/transaction/models/Transaction";
 
@@ -28,6 +28,7 @@ export default async function createTransaction(
       isRecurringPayment,
       date: input.date,
       creditCardId: creditCardId || undefined,
+      status: ITransactionStatus.Pending,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -50,6 +51,7 @@ export default async function createTransaction(
     isRecurringPayment,
     date: addMonths(input.date, index),
     creditCardId: creditCardId || undefined,
+    status: ITransactionStatus.Pending,
     installments: {
       installmentsGroupId,
       total: installmentCount,
