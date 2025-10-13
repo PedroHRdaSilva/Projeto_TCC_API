@@ -18,7 +18,7 @@ async function startServer() {
   try {
     const client: MongoClient = await connectToMongo();
     await client.connect();
-    const dbName = process.env.MONGO_DBNAME || "fairshare";
+    const dbName = process.env.MONGO_DBNAME || "cashtrack";
     const db = client.db(dbName);
     console.log(`✅ Conectado ao MongoDB no database: ${db.databaseName}`);
 

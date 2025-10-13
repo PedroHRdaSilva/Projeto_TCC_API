@@ -12,7 +12,7 @@ import { CreditCard } from "~/module/transaction/models/CreditCard";
 export default function useMongoCollections(
   mongoClient: MongoClient
 ): Collections {
-  const db = mongoClient.db("fairshare");
+  const db = mongoClient.db("cashtrack");
 
   return {
     users: db.collection<User>("users"),
