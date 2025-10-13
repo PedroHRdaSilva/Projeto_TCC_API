@@ -43,7 +43,9 @@ export default async function getTransactionsGroupById(
           },
           deletedAt: { $exists: false },
           categoryId: filterByCategoryId || undefined,
-          description: filterBySearch ? { $regex: filterBySearch } : undefined,
+          description: filterBySearch
+            ? { $regex: filterBySearch, $options: "i" }
+            : undefined,
         }),
       },
       ...LOOKUP_TRANSACTION_CATEGORY,
