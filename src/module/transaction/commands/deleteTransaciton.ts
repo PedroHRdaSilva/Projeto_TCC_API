@@ -6,23 +6,25 @@ import type { Viewer } from "~/infra/types/Viewer";
 export default async function deleteTransaction(
   collections: Collections,
   viewer: Viewer,
-  _id: ObjectId
+  _ids: ObjectId[]
 ) {
-  const transaction = await collections.transactions.detail.findOne({
-    _id,
-    deletedAt: { $exists: false },
-  });
+  console.log("chegou aquii");
+  const transactions = await collections.transactions.detail
+    .find({ _id: { $in: _ids }, deletedAt: { $exists: false } })
+    .toArray();
 
-  if (!transaction) {
+  if (transactions.length === 0) {
     throw new NotFoundError();
   }
 
-  if (transaction.installments) {
-    const { installmentsGroupId } = transaction.installments;
+  const installmentGroupIds = transactions
+    .filter((t) => t.installments?.installmentsGroupId)
+    .map((t) => t.installments?.installmentsGroupId);
 
+  if (installmentGroupIds.length > 0) {
     await collections.transactions.detail.updateMany(
       {
-        "installments.installmentsGroupId": installmentsGroupId,
+        "installments.installmentsGroupId": { $in: installmentGroupIds },
         deletedAt: { $exists: false },
       },
       {
@@ -34,8 +36,8 @@ export default async function deleteTransaction(
     );
   }
 
-  await collections.transactions.detail.updateOne(
-    { _id },
+  await collections.transactions.detail.updateMany(
+    { _id: { $in: _ids } },
     {
       $set: {
         deletedBy: viewer._id,

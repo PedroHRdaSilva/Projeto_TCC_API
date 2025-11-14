@@ -11,6 +11,8 @@ export default async function createCreditCard(
     _id: new ObjectId(),
     transactionGroupId: input.transactionGroupId,
     description: input.description,
+    limit: input.limit,
+    validity: input.validity,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

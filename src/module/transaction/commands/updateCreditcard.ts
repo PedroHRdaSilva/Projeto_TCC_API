@@ -21,6 +21,8 @@ export default async function updateCreditCard(
   const newValues = stripUndefined({
     transactionGroupId: input.transactionGroupId,
     description: input.description,
+    limit: input.limit,
+    validity: input.validity,
   });
 
   await collections.creditCard.updateOne(

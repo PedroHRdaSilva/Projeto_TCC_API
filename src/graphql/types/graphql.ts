@@ -142,12 +142,16 @@ export type ICreditCard = {
   __typename?: "CreditCard";
   _id: Scalars["ObjectID"]["output"];
   description: Scalars["String"]["output"];
+  limit: Scalars["Float"]["output"];
   transactionGroupId: Scalars["ObjectID"]["output"];
+  validity: Scalars["String"]["output"];
 };
 
 export type ICreditCardInput = {
   description: Scalars["String"]["input"];
+  limit: Scalars["Float"]["input"];
   transactionGroupId: Scalars["ObjectID"]["input"];
+  validity: Scalars["String"]["input"];
 };
 
 export type IIconProperties = {
@@ -221,7 +225,7 @@ export type IMutationDeleteCreditCardArgs = {
 };
 
 export type IMutationDeleteTransactionArgs = {
-  _id: Scalars["ObjectID"]["input"];
+  _id: Array<Scalars["ObjectID"]["input"]>;
 };
 
 export type IMutationDeleteTransactionGroupArgs = {
@@ -951,11 +955,13 @@ export type ICreditCardResolvers<
 > = ResolversObject<{
   _id?: Resolver<IResolversTypes["ObjectID"], ParentType, ContextType>;
   description?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
+  limit?: Resolver<IResolversTypes["Float"], ParentType, ContextType>;
   transactionGroupId?: Resolver<
     IResolversTypes["ObjectID"],
     ParentType,
     ContextType
   >;
+  validity?: Resolver<IResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

@@ -40,6 +40,11 @@ export default async function getMonthlySpendingByCategory(
         },
       },
       {
+        $match: {
+          categoryType: "EXPENSES",
+        },
+      },
+      {
         $group: {
           _id: {
             month: { $dateTrunc: { unit: "month", date: "$date" } },
