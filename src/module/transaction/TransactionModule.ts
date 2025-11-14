@@ -50,7 +50,7 @@ const TransactionModule: GraphQLModule = {
 
       updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
 
-      deleteTransaction(_id: ObjectID!): Boolean!
+      deleteTransaction(_id: [ObjectID!]!): Boolean!
       transactionStatus(_id: [ObjectID!]!, status: TransactionStatus!): Boolean!
     }
   `,

@@ -46,12 +46,16 @@ input CreateUserInput {
 type CreditCard {
   _id: ObjectID!
   description: String!
+  limit: Float!
   transactionGroupId: ObjectID!
+  validity: String!
 }
 
 input CreditCardInput {
   description: String!
+  limit: Float!
   transactionGroupId: ObjectID!
+  validity: String!
 }
 
 scalar Currency
@@ -135,7 +139,7 @@ type Mutation {
   createUser(input: CreateUserInput!): Boolean!
   deleteCategory(_id: ObjectID!, groupId: ObjectID!): Boolean
   deleteCreditCard(_id: ObjectID!): Boolean
-  deleteTransaction(_id: ObjectID!): Boolean!
+  deleteTransaction(_id: [ObjectID!]!): Boolean!
   deleteTransactionGroup(_id: ObjectID!): Boolean!
   forgotPassword(email: String!): Boolean!
   loginWithCredentials(email: String!, password: String!): AuthenticatedUser!

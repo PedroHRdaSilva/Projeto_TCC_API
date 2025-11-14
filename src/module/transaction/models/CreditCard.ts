@@ -4,4 +4,6 @@ import type { ObjectId } from "mongodb";
 export type CreditCard = DefaultFieldsWithDeleted & {
   transactionGroupId: ObjectId;
   description: string;
+  limit: number;
+  validity: string;
 };

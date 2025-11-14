@@ -13,11 +13,15 @@ const CreditCardModule: GraphQLModule = {
       _id: ObjectID!
       transactionGroupId: ObjectID!
       description: String!
+      limit: Float!
+      validity: String!
     }
 
     input CreditCardInput {
       transactionGroupId: ObjectID!
       description: String!
+      limit: Float!
+      validity: String!
     }
 
     extend type Query {
