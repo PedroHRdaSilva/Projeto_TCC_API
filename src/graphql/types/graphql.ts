@@ -193,6 +193,8 @@ export type IMutation = {
   updateCreditCard: ICreditCard;
   updateTransaction?: Maybe<ITransaction>;
   updateTransactionGroup: ITransactionGroup;
+  updateUserName: Scalars["Boolean"]["output"];
+  updateUserPassword: Scalars["Boolean"]["output"];
 };
 
 export type IMutationCreateCategoryArgs = {
@@ -269,6 +271,14 @@ export type IMutationUpdateTransactionArgs = {
 export type IMutationUpdateTransactionGroupArgs = {
   _id: Scalars["ObjectID"]["input"];
   input: IUpdateTransactionGroupInput;
+};
+
+export type IMutationUpdateUserNameArgs = {
+  name: Scalars["String"]["input"];
+};
+
+export type IMutationUpdateUserPasswordArgs = {
+  password: Scalars["String"]["input"];
 };
 
 export type IObjectKeyValue = {
@@ -1233,6 +1243,18 @@ export type IMutationResolvers<
     ParentType,
     ContextType,
     RequireFields<IMutationUpdateTransactionGroupArgs, "_id" | "input">
+  >;
+  updateUserName?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateUserNameArgs, "name">
+  >;
+  updateUserPassword?: Resolver<
+    IResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<IMutationUpdateUserPasswordArgs, "password">
   >;
 }>;
 

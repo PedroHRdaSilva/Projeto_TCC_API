@@ -150,6 +150,8 @@ type Mutation {
   updateCreditCard(_id: ObjectID!, input: CreditCardInput!): CreditCard!
   updateTransaction(_id: ObjectID!, input: TransactionInput!): Transaction
   updateTransactionGroup(_id: ObjectID!, input: UpdateTransactionGroupInput!): TransactionGroup!
+  updateUserName(name: String!): Boolean!
+  updateUserPassword(password: String!): Boolean!
 }
 
 scalar NegativeFloat
