@@ -5,6 +5,9 @@ import resetPassword from "~/module/users/commands/resetPassword";
 import authenticateUser from "~/module/users/commands/authenticateUser";
 import { GraphQLModule } from "~/graphql/module";
 import getUserById from "~/module/users/queries/getUserById";
+import updateUserName from "~/module/users/commands/updateUserName";
+import updateUserPassword from "~/module/users/commands/updateUserPassword";
+import { ForbiddenError } from "~/infra/GraphQLErrors";
 
 const UserModule: GraphQLModule = {
   typeDefs: gql`
@@ -38,6 +41,8 @@ const UserModule: GraphQLModule = {
       createUser(input: CreateUserInput!): Boolean!
       forgotPassword(email: String!): Boolean!
       resetPassword(token: String!, password: String!): Boolean!
+      updateUserName(name: String!): Boolean!
+      updateUserPassword(password: String!): Boolean!
     }
   `,
   resolvers: {
@@ -63,6 +68,18 @@ const UserModule: GraphQLModule = {
       },
       loginWithCredentials: async (_source, args, ctx) => {
         return authenticateUser(ctx.collections, args.email, args.password);
+      },
+      updateUserName: async (_source, args, ctx) => {
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
+        return updateUserName(ctx.collections, ctx.viewer, args.name);
+      },
+      updateUserPassword: async (_source, args, ctx) => {
+        if (!ctx.viewer) {
+          throw new ForbiddenError();
+        }
+        return updateUserPassword(ctx.collections, ctx.viewer, args.password);
       },
     },
   },
