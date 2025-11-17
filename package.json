@@ -7,6 +7,7 @@
   "scripts": {
     "build": "swc --source-maps true --out-dir .build src",
     "dev": "nodemon --quiet -e ts,tsx -w src --ignore src/build/git.ts --exec \"npm run build && cross-env TZ=UTC node --no-warnings --enable-source-maps --es-module-specifier-resolution=node .build/src/server\"",
+    "start": "cross-env TZ=UTC node --no-warnings --enable-source-maps --es-module-specifier-resolution=node .build/src/server.js",
     "codegen": "graphql-codegen --config codegen.yml && prettier --write src/graphql/types/graphql.ts"
   },
   "keywords": [],
