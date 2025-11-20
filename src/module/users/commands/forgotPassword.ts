@@ -26,10 +26,13 @@ export default async function forgotPassword(
     }
   );
 
-  const resetUrl = `http://localhost:3000/reset-password/${token}`;
+  const resetUrl = `http://projeto-tcc-web.vercel.app/reset-password/${token}`;
+  // const resetUrl = `http://localhost:3000/reset-password/${token}`;
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // SSL
     auth: {
       user: process.env.GMAIL_USER,
       pass: process.env.GMAIL_APP_PASSWORD,
